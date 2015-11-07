@@ -1,7 +1,7 @@
 export default class AbstractState extends Phaser.State {
     displayLabel({ message, x, y, font }) {
         let style = {
-            font: font || "bold 32px Verdana",
+            font: font || "lighter 54px Verdana",
             fill: "#fff",
             boundsAlignH: "center",
             boundsAlignV: "middle"

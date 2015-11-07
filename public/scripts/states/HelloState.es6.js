@@ -45,12 +45,13 @@ export default class HelloState extends AbstractState {
         });
 
         this.displayLabel({
-            message: `Hello "${this.name}"!`
+            message: `Hello "${this.name}"!`,
+            y: (this.game.height / 2) - 30
         });
         this.displayLabel({
-            message: 'Click to begin...',
-            y: (this.game.height / 2) + 60,
-            font: 'lighter 20px Verdana'
+            message: 'Click to begin',
+            y: (this.game.height / 2) + 50,
+            font: 'bold 32px Verdana'
         });
     }
 
