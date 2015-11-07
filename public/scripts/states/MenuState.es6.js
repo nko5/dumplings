@@ -1,3 +1,4 @@
+import Player from '../models/Player';
 import AbstractState from './AbstractState';
 
 export default class MenuState extends AbstractState {
@@ -8,11 +9,10 @@ export default class MenuState extends AbstractState {
     create() {
         this.add.image(0, 0, 'footer_lodyas');
 
-        let button = this.add.button(0, 0, '', () => {
+        this.displayClick(() => {
+            this.game.player = new Player(this.game);
             this.state.start('Game');
-        }, this);
-        button.width = this.game.width;
-        button.height = this.game.height;
+        });
 
         this.displayLabel('Click to begin');
     }
