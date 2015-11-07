@@ -31,8 +31,9 @@ h2 {
     box-shadow: 0 0 5px #fff;
 }
 
-#form {
-    opacity: 0;
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+.fill-max {
     width: 800px;
     height: 450px;
     line-height: 450px;
@@ -42,6 +43,10 @@ h2 {
     top: 0;
     right: 0;
     bottom: 0;
+}
+
+#form {
+    opacity: 0;
 }
 
 #form input {
@@ -54,16 +59,24 @@ h2 {
     outline: none;
 }
 
+#messages {
+    width: 100%;
+    display: none;
+}
+
+#messages p {
+    background: rgba(255, 0, 0, 0.7);
+    font-size: 64px;
+    font-family: Verdana, serif;
+    color: #fff;
+    margin-top: 5%;
+    height: 50%;
+    line-height: 300%;
+    cursor: pointer;
+}
+
 #area {
     border: 1px solid #000;
-    width: 800px;
-    height: 450px;
-    margin: auto;
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
     box-shadow: 0 0 20px #000;
     border-radius: 6px;
 }

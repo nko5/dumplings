@@ -1,6 +1,7 @@
 import Board from '../models/Board';
 import Player from '../models/Player';
 import AbstractState from './AbstractState';
+import Message from '../message';
 
 export default class HelloState extends AbstractState {
     init(options) {
@@ -71,6 +72,9 @@ export default class HelloState extends AbstractState {
 
             this.game.socket.on('disconnect', () => {
                 console.log('[$] socket: disconnect');
+                new Message('ERR: Please reload app', () => {
+                    window.location.reload();
+                });
             });
 
             this.game.socket.on('error', () => {

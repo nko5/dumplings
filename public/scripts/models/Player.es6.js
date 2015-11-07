@@ -101,7 +101,8 @@ export default class Player {
         this.sprite.body.collideWorldBounds = true;
         this.sprite.body.linearDamping = 1;
 
-        // this.sprite.body.setSize(30, 30, 0, 10);
+        // Smaller sprite to be less sensitive in collisions.
+        this.sprite.body.setSize(this.sprite.width - 4, this.sprite.height);
     }
 
     get x() {

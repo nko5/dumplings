@@ -18,11 +18,23 @@ http.listen(port, function () {
 
 var clients = [];
 
+function appendClients(index, player) {
+    clients[index - 1].player = player;
+}
+
 function cleanClients() {
     clients.forEach(function (client) {
-        if (client.disconnected && client.player) {
-            console.log("[!] remove client: %s (%s)", client.player.name, client.player.id);
+        if (client.disconnected) {
             clients.splice(clients.indexOf(client), 1);
+        }
+    });
+}
+
+function dumpConnectedPlayers() {
+    return clients.forEach(function (client) {
+        if (client.connected && client.player) {
+            console.log('[~] dump player: %s (%s)', client.player.name, client.player.id);
+            return client;
         }
     });
 }
@@ -35,10 +47,11 @@ io.on('connection', function (socket) {
     console.log('[$] socket: connection (%d)', clients.length);
 
     socket.on('player:new', function (player) {
+        appendClients(index, player);
+        dumpConnectedPlayers();
+
         console.log('[$] socket: player:new: "%s"', player.name);
         io.emit('player:new', player);
-
-        clients[index - 1].player = player;
     });
 
     socket.on('player:move', function (player) {
@@ -51,6 +64,7 @@ io.on('connection', function (socket) {
 
     io.on('disconnect', function () {
         console.log('[$] socket: disconnect');
+        cleanClients();
     });
 
     io.on('end', function () {
