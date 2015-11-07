@@ -88,8 +88,12 @@ export default class GameState extends AbstractState {
         clock.repeat(Settings.INTERVAL_ITEMS_DISAPPEAR, Infinity, () => {
             let index = this.rnd.integerInRange(0, items.length - 1);
 
-            if (items.getAt(index)) {
+            try {
+                // Hack which resolves:
+                // Uncaught Error: getChildAt: Supplied index 0 does not exist in the child list, or the supplied DisplayObject must be a child of the caller
                 items.removeChildAt(index);
+            } catch (ignore) {
+                console.warn('Error happen during randomly removed items');
             }
 
             board.updateAvailableScore(items.length * Settings.ITEM_POINT);
