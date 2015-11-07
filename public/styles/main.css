@@ -6,10 +6,24 @@
 body {
     text-align: center;
     overflow: hidden;
-    background: url("../images/footer_lodyas.png") repeat 0 0;
+    background: url("../assets/images/congruent_outline.png") repeat 0 0;
 }
 
 h2 {
     font-family: "Merriweather", "Roboto", sans-serif;
     margin-top: 15px;
+}
+
+#area {
+    float: left;
+    border: 1px solid #000;
+    width: 800px;
+    height: 400px;
+    margin: auto;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: 0 0 20px #000;
 }

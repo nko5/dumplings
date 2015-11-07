@@ -1,19 +1,20 @@
-export default class MenuState extends Phaser.State {
+import AbstractState from './AbstractState';
+
+export default class MenuState extends AbstractState {
     preload() {
-        // this.load.image('geek', '');
-        this.game.load.spritesheet('gameboy-tileset', 'assets/tilesets/gameboy-tileset.png', 16, 16);
-        this.load.tilemap('map-1',  'assets/maps/map-1.json', null, Phaser.Tilemap.TILED_JSON);
+        this.load.image('footer_lodyas', 'assets/images/footer_lodyas.png');
     }
 
     create() {
-        console.log(this.game.player);
+        this.add.image(0, 0, 'footer_lodyas');
 
-        let map = this.game.add.tilemap('map-1');
-        map.addTilesetImage('gameboy-tileset');
-        map.setCollisionBetween(1, 256);
+        let button = this.add.button(0, 0, '', () => {
+            this.state.start('Game');
+        }, this);
+        button.width = this.game.width;
+        button.height = this.game.height;
 
-        let worldLayer = map.createLayer('Tile Layer 1');
-        worldLayer.resizeWorld();
+        this.displayLabel('Click to begin');
     }
 
     update() {
