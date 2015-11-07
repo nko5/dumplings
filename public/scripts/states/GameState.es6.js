@@ -41,16 +41,43 @@ export default class GameState extends AbstractState {
     }
 
     _setupItems() {
-        let items = this.game.items = this.add.group();
-
+        this.game.items = this.add.group();
         let places = this.cache.getJSON('positions-1');
+        places.forEach(({x, y}) => this._createItem(x, y));
+        this._setupRandomAppear();
+        this._setupRandomDisappear();
+    }
 
-        places.forEach(({ x, y }) => {
-            let item = this.add.tileSprite(x * 16, y * 16, 16, 16, 'gameboy-tileset', 2);
-            this.physics.arcade.enable(item);
-            item.body.allowGravity = false;
-            items.add(item);
+    _createItem(x, y) {
+        let item = this.add.tileSprite(x * 16, y * 16, 16, 16, 'gameboy-tileset', 2);
+        this.physics.arcade.enable(item);
+        item.name = 'item';
+        item.body.allowGravity = false;
+        this.game.items.add(item);
+    }
+
+    _setupRandomAppear() {
+        let clock = this.time.create();
+
+        clock.repeat(1000, Infinity, () => {
+            let x = this.rnd.integerInRange(1, 49);
+            let y = this.rnd.integerInRange(1, 24);
+
+            this._createItem(x, y);
         });
+
+        clock.start();
+    }
+
+    _setupRandomDisappear() {
+        let clock = this.time.create();
+
+        clock.repeat(1000, Infinity, () => {
+            let index = this.rnd.integerInRange(0, this.game.items.length - 1);
+            this.game.items.removeChildAt(index);
+        });
+
+        clock.start();
     }
 
     update() {
@@ -62,6 +89,12 @@ export default class GameState extends AbstractState {
         this.game.physics.arcade.collide(this.game.player.sprite, this.worldLayer);
         this.game.physics.arcade.collide(this.game.player.sprite, this.game.items, (player, item) => {
             item.destroy();
+        });
+
+        this.game.physics.arcade.overlap(this.game.items, this.worldLayer, (item, map) => {
+            if (map.index !== -1) {
+                item.destroy();
+            }
         });
     }
 

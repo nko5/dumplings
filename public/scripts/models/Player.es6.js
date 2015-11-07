@@ -9,6 +9,7 @@ export default class Player {
 
     render() {
         let sprite = this.sprite = this.game.add.sprite(50, 70, 'mms');
+        sprite.name = 'player';
         sprite.anchor.setTo(0.5, 1);
 
         sprite.animations.add('stay', [2, 4, 8, 11, 14].map((i) => i - 1), 3, true, true);
