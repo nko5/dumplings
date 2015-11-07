@@ -2,7 +2,6 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var uuid = require('node-uuid');
 var port = 8080;
 
 
@@ -20,10 +19,13 @@ http.listen(port, function () {
 io.on('connection', function (socket) {
     console.log('[+] connection');
 
-    socket.on('new:player', function (player) {
-        player.id = uuid.v4();
-        console.log('[*] new:player', player);
-        io.emit('new:player', player);
+    socket.on('player:new', function (player) {
+        console.log('[*] player:new', player);
+        io.emit('player:new', player);
+    });
+
+    socket.on('player:move', function (player) {
+        io.emit('player:move', player);
     });
 
     io.on('disconnect', function () {

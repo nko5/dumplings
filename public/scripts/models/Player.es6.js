@@ -1,7 +1,8 @@
 export default class Player {
     game = null;
-    name = null;
 
+    id = null;
+    name = null;
     type = null;
     defaultPosition = {
         x: 0,
@@ -12,12 +13,16 @@ export default class Player {
 
     constructor(game, options) {
         this.game = game;
+
+        this.id = options.id || uuid.v4();
         this.name = options.name;
 
-        let character = this._getRandomCharacter();
+        if (!options.type) {
+            options.type = this._getRandomCharacter().type;
+        }
 
-        this.type = options.type || character.type;
-        this.defaultPosition = this._getCharacter().position || character.position;
+        this.type = options.type;
+        this.defaultPosition = this._getCharacter().position;
     }
 
     characters() {
@@ -62,6 +67,7 @@ export default class Player {
     }
 
     _getRandomCharacter() {
+        console.debug('random character');
         let types = this.characters();
         let index = this.game.rnd.integerInRange(0, types.length - 1);
         return types[index];
@@ -115,5 +121,16 @@ export default class Player {
 
     addScore(score) {
         this.score += score;
+    }
+
+    toJSON() {
+        return {
+            id: this.id,
+            name: this.name,
+            type: this.type,
+            score: this.score,
+            x: this.x,
+            y: this.y
+        }
     }
 }
