@@ -45,7 +45,7 @@ export default class Board {
             localStorage.setItem(Settings.STORAGE_RECORD_SCORE, player.score);
         }
 
-        this.playerScore.text = `Map record: ${record}`;
+        this.playerScore.text = `Personal best: ${record}`;
     }
 
     updateAvailableScore(max) {
