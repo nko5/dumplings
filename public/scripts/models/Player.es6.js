@@ -8,13 +8,36 @@ export default class Player {
         this.game = game;
     }
 
-    render() {
+    types() {
+        return [
+            {
+                type: 'red',
+                stay: [2, 4, 8, 11, 14].map((i) => i - 1),
+                walk: [1, 5, 7, 32, 13, 15].map((i) => i - 1)
+            },
+            {
+                type: 'yellow',
+                stay: [17, 20, 22, 26, 29].map((i) => i - 1),
+                walk: [16, 19, 23, 25, 28, 30].map((i) => i - 1)
+            }
+        ]
+    }
+
+    render(options) {
+        let type = this.types().find((item) => {
+            return (item.type == options.type);
+        });
+
+        if (!type) {
+            throw new Error('Player#render: type is undefined');
+        }
+
         let sprite = this.sprite = this.game.add.sprite(50, 70, 'mms');
         sprite.name = 'player';
         sprite.anchor.setTo(0.5, 1);
 
-        sprite.animations.add('stay', [2, 4, 8, 11, 14].map((i) => i - 1), 3, true, true);
-        sprite.animations.add('walk', [1, 5, 7, 32, 13, 15].map((i) => i - 1), 8, true, true);
+        sprite.animations.add('stay', type.stay, 3, true, true);
+        sprite.animations.add('walk', type.walk, 8, true, true);
 
         sprite.animations.play('stay');
 
