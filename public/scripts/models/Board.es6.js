@@ -1,3 +1,5 @@
+import Settings from '../config';
+
 export default class Board {
     game = null;
     playerScore = null;
@@ -36,11 +38,11 @@ export default class Board {
     }
 
     updatePlayerScore(player) {
-        let record = localStorage.getItem('nko5-record-score') || 0;
+        let record = localStorage.getItem(Settings.STORAGE_RECORD_SCORE) || 0;
 
         if (player.score > record) {
             record = player.score;
-            localStorage.setItem('nko5-record-score', player.score);
+            localStorage.setItem(Settings.STORAGE_RECORD_SCORE, player.score);
         }
 
         this.playerScore.text = `Map record: ${record}`;

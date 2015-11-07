@@ -3,18 +3,15 @@
     padding: 0;
 }
 
-@media (max-width: 500px) {
-    #github-ribbon {
-        display: none;
-    }
+body {
+    text-align: center;
+    overflow: hidden;
+    background: url("../assets/images/congruent_outline.png") repeat 0 0;
+}
 
-    #nko-badge {
-        display: none;
-    }
-
-    #area {
-        transform: translateX(-200px) rotate(-90deg);
-    }
+h2 {
+    font-family: "Merriweather", "Roboto", sans-serif;
+    margin-top: 15px;
 }
 
 #github-ribbon {
@@ -34,15 +31,27 @@
     box-shadow: 0 0 5px #fff;
 }
 
-body {
-    text-align: center;
-    overflow: hidden;
-    background: url("../assets/images/congruent_outline.png") repeat 0 0;
+#form {
+    opacity: 0;
+    width: 800px;
+    height: 450px;
+    line-height: 450px;
+    margin: auto;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
 }
 
-h2 {
-    font-family: "Merriweather", "Roboto", sans-serif;
-    margin-top: 15px;
+#form input {
+    text-align: center;
+    font-size: 36px;
+    padding: 10px;
+    border: 1px solid #fff;
+    box-shadow: 0 0 20px #fff;
+    border-radius: 6px;
+    outline: none;
 }
 
 #area {
@@ -62,4 +71,18 @@ h2 {
 #area canvas {
     float: left;
     border-radius: inherit;
+}
+
+@media (max-width: 500px) {
+    #github-ribbon {
+        display: none;
+    }
+
+    #nko-badge {
+        display: none;
+    }
+
+    #area {
+        transform: translateX(-200px) rotate(-90deg);
+    }
 }

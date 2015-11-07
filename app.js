@@ -4,6 +4,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = 8080;
 
+
 // HTTP
 
 app.use(express.static(__dirname + '/public'));
@@ -11,6 +12,7 @@ app.use(express.static(__dirname + '/public'));
 http.listen(port, function () {
     console.log('listening on *:' + port);
 });
+
 
 // Socket.io
 

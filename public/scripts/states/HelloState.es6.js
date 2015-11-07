@@ -2,7 +2,11 @@ import Board from '../models/Board';
 import Player from '../models/Player';
 import AbstractState from './AbstractState';
 
-export default class MenuState extends AbstractState {
+export default class HelloState extends AbstractState {
+    init(options) {
+        this.name = options.name;
+    }
+
     preload() {
         this.load.image('congruent_outline', 'assets/images/congruent_outline.png');
         this.load.image('footer_lodyas', 'assets/images/footer_lodyas.png');
@@ -13,17 +17,21 @@ export default class MenuState extends AbstractState {
 
         this.displayClick(() => {
             this.game.board = new Board(this.game);
-            this.game.player = new Player(this.game);
+            this.game.player = new Player(this.game, this.name);
 
             this.game.socket = io();
 
             this.game.socket.on('new:player', (player) => {
                 if (player.name === this.game.player.name) {
                     console.debug('[?] ignore user (the same name)');
+                } else {
+                    console.info('[+] new player', player);
                 }
             });
 
-            this.game.socket.emit('new:player', { name: this.game.player.name });
+            this.game.socket.emit('new:player', {
+                name: this.game.player.name
+            });
 
             this.game.socket.on('connect', () => {
                 console.log('[+] connect');
@@ -36,7 +44,14 @@ export default class MenuState extends AbstractState {
             this.state.start('Game');
         });
 
-        this.displayLabel('Click to begin');
+        this.displayLabel({
+            message: `Hello "${this.name}"!`
+        });
+        this.displayLabel({
+            message: 'Click to begin...',
+            y: (this.game.height / 2) + 60,
+            font: 'lighter 20px Verdana'
+        });
     }
 
     update() {

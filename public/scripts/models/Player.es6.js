@@ -4,8 +4,9 @@ export default class Player {
     sprite = null;
     score = 0;
 
-    constructor(game) {
+    constructor(game, name) {
         this.game = game;
+        this.name = name;
     }
 
     static types() {

@@ -1,15 +1,8 @@
-import MenuState from './states/MenuState';
-import GameState from './states/GameState';
+import Game from './game';
+import Authorization from './authorization';
 
-class Game {
-    constructor() {
-        this.game = new Phaser.Game(800, 450, Phaser.AUTO, 'area');
+let game = new Game();
 
-        this.game.state.add('Menu', MenuState);
-        this.game.state.add('Game', GameState);
-
-        this.game.state.start('Menu');
-    }
-}
-
-new Game();
+Authorization.signIn((options) => {
+    game.start(options);
+});
