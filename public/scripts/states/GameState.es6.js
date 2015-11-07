@@ -75,11 +75,11 @@ export default class GameState extends AbstractState {
 
         if (keyboard.isDown(Phaser.Keyboard.LEFT)) {
             body.velocity.x = -150;
-            // sprite.scale.x = -1;
+            sprite.scale.x = -1;
             sprite.animations.play('walk');
         } else if (keyboard.isDown(Phaser.Keyboard.RIGHT)) {
             body.velocity.x = 150;
-            // sprite.scale.x = 1;
+            sprite.scale.x = 1;
             sprite.animations.play('walk');
         } else {
             sprite.animations.play('stay');

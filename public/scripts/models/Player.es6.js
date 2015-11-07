@@ -9,9 +9,7 @@ export default class Player {
 
     render() {
         let sprite = this.sprite = this.game.add.sprite(50, 70, 'mms');
-
-        sprite.anchor.setTo(0, 1);
-        // sprite.scale.setTo(0.8, 0.8);
+        sprite.anchor.setTo(0.5, 1);
 
         sprite.animations.add('stay', [2, 4, 8, 11, 14].map((i) => i - 1), 3, true, true);
         sprite.animations.add('walk', [1, 5, 7, 32, 13, 15].map((i) => i - 1), 8, true, true);
