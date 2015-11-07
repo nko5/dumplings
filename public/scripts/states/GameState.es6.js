@@ -17,8 +17,12 @@ export default class GameState extends AbstractState {
 
     create() {
         this._setupWorld();
+        this.game.board.render();
         this.game.player.render();
         this._setupItems();
+
+        this.game.board.updatePlayerScore(this.game.player);
+        this.game.board.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
     }
 
     _setupWorld() {
@@ -58,6 +62,8 @@ export default class GameState extends AbstractState {
     }
 
     _setupRandomAppear() {
+        let board = this.game.board;
+        let items = this.game.items;
         let clock = this.time.create();
 
         clock.repeat(Settings.INTERVAL_ITEMS_APPEAR, Infinity, () => {
@@ -65,17 +71,26 @@ export default class GameState extends AbstractState {
             let y = this.rnd.integerInRange(1, 24);
 
             this._createItem(x, y);
+
+            board.updateAvailableScore(items.length * Settings.ITEM_POINT);
         });
 
         clock.start();
     }
 
     _setupRandomDisappear() {
+        let board = this.game.board;
+        let items = this.game.items;
         let clock = this.time.create();
 
         clock.repeat(Settings.INTERVAL_ITEMS_DISAPPEAR, Infinity, () => {
-            let index = this.rnd.integerInRange(0, this.game.items.length - 1);
-            this.game.items.removeChildAt(index);
+            let index = this.rnd.integerInRange(0, items.length - 1);
+
+            if (items.getAt(index)) {
+                items.removeChildAt(index);
+            }
+
+            board.updateAvailableScore(items.length * Settings.ITEM_POINT);
         });
 
         clock.start();
@@ -87,9 +102,14 @@ export default class GameState extends AbstractState {
     }
 
     _handleCollision() {
-        this.game.physics.arcade.collide(this.game.player.sprite, this.worldLayer);
-        this.game.physics.arcade.collide(this.game.player.sprite, this.game.items, (player, item) => {
+        let player = this.game.player;
+        let board = this.game.board;
+
+        this.game.physics.arcade.collide(player.sprite, this.worldLayer);
+        this.game.physics.arcade.collide(player.sprite, this.game.items, (sprite, item) => {
             item.destroy();
+            player.addScore(Settings.ITEM_POINT);
+            board.updatePlayerScore(player);
         });
 
         this.game.physics.arcade.overlap(this.game.items, this.worldLayer, (item, map) => {

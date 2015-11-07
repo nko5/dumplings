@@ -3,7 +3,7 @@ import GameState from './states/GameState';
 
 class Game {
     constructor() {
-        this.game = new Phaser.Game(800, 400, Phaser.AUTO, 'area');
+        this.game = new Phaser.Game(800, 450, Phaser.AUTO, 'area');
 
         this.game.state.add('Menu', MenuState);
         this.game.state.add('Game', GameState);

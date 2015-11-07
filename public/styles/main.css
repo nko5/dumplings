@@ -3,6 +3,20 @@
     padding: 0;
 }
 
+@media (max-width: 500px) {
+    #github-ribbon {
+        display: none;
+    }
+
+    #nko-badge {
+        display: none;
+    }
+
+    #area {
+        transform: translateX(-200px) rotate(-90deg);
+    }
+}
+
 #github-ribbon {
     position: absolute;
     top: 0;
@@ -32,10 +46,9 @@ h2 {
 }
 
 #area {
-    float: left;
     border: 1px solid #000;
     width: 800px;
-    height: 400px;
+    height: 450px;
     margin: auto;
     position: absolute;
     left: 0;
@@ -47,5 +60,6 @@ h2 {
 }
 
 #area canvas {
+    float: left;
     border-radius: inherit;
 }

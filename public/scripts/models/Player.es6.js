@@ -2,6 +2,7 @@ export default class Player {
     game = null;
     name = 'no name';
     sprite = null;
+    score = 0;
 
     constructor(game) {
         this.game = game;
@@ -28,5 +29,9 @@ export default class Player {
         this.sprite.body.linearDamping = 1;
 
         // this.sprite.body.setSize(30, 30, 0, 10);
+    }
+
+    addScore(score) {
+        this.score += score;
     }
 }
