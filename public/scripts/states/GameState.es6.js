@@ -3,19 +3,6 @@ import Player from '../models/Player';
 import AbstractState from './AbstractState';
 
 export default class GameState extends AbstractState {
-    preload() {
-        this.load.json('positions-1', 'assets/items/positions-1.json');
-
-        this.load.spritesheet('gameboy-tileset', 'assets/tilesets/gameboy-tileset.png', 16, 16);
-        this.load.tilemap('map-1', 'assets/maps/map-1.json', null, Phaser.Tilemap.TILED_JSON);
-
-        this.load.atlasJSONHash(
-            'mms',
-            'assets/sprites/mms.png',
-            'assets/sprites/mms.json'
-        );
-    }
-
     create() {
         this._setupWorld();
         this.game.board.render();

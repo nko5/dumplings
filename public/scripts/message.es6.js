@@ -8,6 +8,7 @@ export default class Message {
     }
 
     _setupDOM(label, callback) {
+        this.$messages.innerHTML = '';
         this.$messages.style.display = 'block';
 
         let $message = document.createElement('p');

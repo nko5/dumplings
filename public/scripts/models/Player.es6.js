@@ -35,7 +35,7 @@ export default class Player {
                 walk: [1, 5, 7, 32, 13, 15].map((i) => i - 1),
                 position: {
                     x: 50,
-                    y: 70
+                    y: 96
                 }
             },
             {
@@ -43,8 +43,8 @@ export default class Player {
                 stay: [17, 20, 22, 26, 29].map((i) => i - 1),
                 walk: [16, 19, 23, 25, 28, 30].map((i) => i - 1),
                 position: {
-                    x: this.game.width - 50,
-                    y: 70
+                    x: this.game.width - 64,
+                    y: 96
                 }
             },
             {
@@ -53,7 +53,7 @@ export default class Player {
                 walk: [43, 45, 47, 49, 50, 51].map((i) => i - 1),
                 position: {
                     x: 50,
-                    y: this.game.height - 100
+                    y: this.game.height - 64
                 }
             },
             {
@@ -61,8 +61,8 @@ export default class Player {
                 stay: [53, 55, 57, 59].map((i) => i - 1),
                 walk: [52, 54, 56, 58, 60, 61].map((i) => i - 1),
                 position: {
-                    x: this.game.width - 50,
-                    y: this.game.height - 100
+                    x: this.game.width - 80,
+                    y: this.game.height - 96
                 }
             }
         ]
@@ -102,7 +102,7 @@ export default class Player {
         this.sprite.body.linearDamping = 1;
 
         // Smaller sprite to be less sensitive in collisions.
-        this.sprite.body.setSize(this.sprite.width - 4, this.sprite.height);
+        this.sprite.body.setSize(this.sprite.width - 6, this.sprite.height);
     }
 
     get x() {

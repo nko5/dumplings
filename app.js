@@ -31,10 +31,10 @@ function cleanClients() {
 }
 
 function dumpConnectedPlayers() {
-    return clients.forEach(function (client) {
+    return clients.map(function (client) {
         if (client.connected && client.player) {
-            console.log('[~] dump player: %s (%s)', client.player.name, client.player.id);
-            return client;
+            // console.log('[~] dump player: %s (%s)', client.player.name, client.player.id);
+            return client.player;
         }
     });
 }
@@ -48,10 +48,9 @@ io.on('connection', function (socket) {
 
     socket.on('player:new', function (player) {
         appendClients(index, player);
-        dumpConnectedPlayers();
 
         console.log('[$] socket: player:new: "%s"', player.name);
-        io.emit('player:new', player);
+        io.emit('player:new', player, dumpConnectedPlayers());
     });
 
     socket.on('player:move', function (player) {
