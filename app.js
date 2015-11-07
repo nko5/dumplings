@@ -1,22 +1,28 @@
 var express = require('express');
 var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 var port = 8080;
 
-var env = app.get('env');
+// HTTP
 
-switch (env) {
-    case 'development':
-        console.log('DEVELOPMENT');
-        break;
-
-    case 'production':
-        console.log('PRODUCTION');
-        break;
-}
-
-// Create a static file server
 app.use(express.static(__dirname + '/public'));
 
-app.listen(port);
+http.listen(port, function () {
+    console.log('listening on *:' + port);
+});
 
-console.log('Express server started on port %s', port);
+// Socket.io
+
+io.on('connection', function (socket) {
+    console.log('[+] connection');
+
+    socket.on('new:player', function (player) {
+        console.log('[*] new:player', player);
+        // io.emit('chat message', msg);
+    });
+
+    io.on('disconnect', function () {
+        console.log('[-] disconnect');
+    });
+});

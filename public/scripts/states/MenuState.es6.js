@@ -14,6 +14,18 @@ export default class MenuState extends AbstractState {
         this.displayClick(() => {
             this.game.board = new Board(this.game);
             this.game.player = new Player(this.game);
+
+            this.game.socket = io();
+            this.game.socket.emit('new:player', { name: this.game.player.name });
+
+            this.game.socket.on('connect', () => {
+                console.log('[+] connect');
+            });
+
+            this.game.socket.on('disconnect', () => {
+                console.log('[-] disconnect');
+            });
+
             this.state.start('Game');
         });
 
