@@ -7,7 +7,8 @@ export default class MenuState extends AbstractState {
     }
 
     create() {
-        this.add.image(0, 0, 'footer_lodyas');
+        // this.add.image(0, 0, 'footer_lodyas');
+        this.game.stage.backgroundColor = 'rgba(0, 0, 0, 1)';
 
         this.displayClick(() => {
             this.game.player = new Player(this.game);

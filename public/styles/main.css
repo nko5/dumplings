@@ -26,4 +26,9 @@ h2 {
     right: 0;
     bottom: 0;
     box-shadow: 0 0 20px #000;
+    border-radius: 6px;
+}
+
+#area canvas {
+    border-radius: inherit;
 }
