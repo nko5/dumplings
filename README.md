@@ -39,3 +39,9 @@ including it in your site:
 
 If you have any issues, we're on IRC in #nodeknockout on freenode, email us at
 <help@nodeknockout.com>, or tweet [@nodeknockout](https://twitter.com/nodeknockout).
+
+---
+
+## Links
+
+ - http://subtlepatterns.com/thumbnail-view/

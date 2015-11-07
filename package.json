@@ -1,22 +1,24 @@
 {
-    "name": "game-pokemon",
-    "version": "0.0.1",
-    "description": "Pokemon Game",
-    "author": {
-        "name": "Piotr Kowalski",
-        "email": "piecioshka@gmail.com",
-        "url": "piecioshka.pl"
-    },
-    "main": "./app.js",
-    "dependencies": {
-        "babel-core": "^6.1.2",
-        "babel-loader": "^6.0.1",
-        "babel-preset-es2015": "^6.1.2",
-        "express": "3.x.x"
-    },
-    "scripts": {
-        "start": "node app.js",
-        "install": "webpack",
-        "postinstall": "node scripts/postinstall.js"
-    }
+  "name": "game-pokemon",
+  "version": "0.0.1",
+  "description": "Pokemon Game",
+  "author": {
+    "name": "Piotr Kowalski",
+    "email": "piecioshka@gmail.com",
+    "url": "piecioshka.pl"
+  },
+  "main": "./app.js",
+  "dependencies": {
+    "babel-core": "^6.1.2",
+    "babel-loader": "^6.0.1",
+    "babel-preset-es2015": "^6.1.2",
+    "express": "3.x.x",
+    "webpack": "^1.12.3"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "preinstall": "bower install",
+    "install": "webpack",
+    "postinstall": "node scripts/postinstall.js"
+  }
 }
