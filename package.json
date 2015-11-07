@@ -1,7 +1,7 @@
 {
-  "name": "pokemon-game",
+  "name": "mms-game",
   "version": "0.0.1",
-  "description": "Pokemon Game:: Node Knockout 2015",
+  "description": "M&Ms Game:: Node Knockout 2015",
   "license": "MIT",
   "author": {
     "name": "Piotr Kowalski",
