@@ -25,7 +25,7 @@
     },
     "scripts": {
         "clear": "rm -rf node_modules/ public/components/ dist/",
-        "start": "nodemon app.js",
+        "start": "node app.js",
         "preinstall": "bower install",
         "install": "webpack",
         "postinstall": "node scripts/postinstall.js"
