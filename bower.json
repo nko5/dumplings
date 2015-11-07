@@ -1,0 +1,6 @@
+{
+    "name": "game-pokemon",
+    "dependencies": {
+        "phaser": "~2.4.4"
+    }
+}
