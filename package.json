@@ -1,26 +1,32 @@
 {
-    "name": "game-pokemon",
-    "version": "0.0.1",
-    "description": "Pokemon Game",
-    "author": {
-        "name": "Piotr Kowalski",
-        "email": "piecioshka@gmail.com",
-        "url": "piecioshka.pl"
-    },
-    "main": "./app.js",
-    "dependencies": {
-        "babel-core": "^6.1.2",
-        "babel-loader": "^6.0.1",
-        "babel-preset-es2015": "^6.1.2",
-        "bower": "^1.6.5",
-        "express": "3.x.x",
-        "webpack": "^1.12.3"
-    },
-    "scripts": {
-        "clear": "rm -rf node_modules/ public/components/ dist/",
-        "start": "node app.js",
-        "preinstall": "bower install",
-        "install": "webpack",
-        "postinstall": "node scripts/postinstall.js"
-    }
+  "name": "pokemon-game",
+  "version": "0.0.1",
+  "description": "Pokemon Game:: Node Knockout 2015",
+  "license": "MIT",
+  "author": {
+    "name": "Piotr Kowalski",
+    "email": "piecioshka@gmail.com",
+    "url": "piecioshka.pl"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/nko5/dumplings.git"
+  },
+  "main": "./app.js",
+  "dependencies": {
+    "babel-core": "^6.1.2",
+    "babel-loader": "^6.0.1",
+    "babel-preset-es2015": "^6.1.2",
+    "babel-preset-stage-0": "^6.1.2",
+    "bower": "^1.6.5",
+    "express": "3.x.x",
+    "webpack": "^1.12.3"
+  },
+  "scripts": {
+    "clear": "rm -rf node_modules/ public/components/ dist/",
+    "start": "node app.js",
+    "preinstall": "bower install",
+    "install": "webpack",
+    "postinstall": "node scripts/postinstall.js"
+  }
 }

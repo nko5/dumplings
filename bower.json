@@ -1,5 +1,5 @@
 {
-    "name": "game-pokemon",
+    "name": "pokemon-game",
     "dependencies": {
         "phaser": "~2.4.4"
     }
