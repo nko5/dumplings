@@ -3,7 +3,16 @@ var app = express();
 var port = 8080;
 
 var env = app.get('env');
-console.log(env);
+
+switch (env) {
+    case 'development':
+        console.log('DEVELOPMENT');
+        break;
+
+    case 'production':
+        console.log('PRODUCTION');
+        break;
+}
 
 // Create a static file server
 app.use(express.static(__dirname + '/public'));
