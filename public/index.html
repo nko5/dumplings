@@ -24,6 +24,11 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="components/phaser/build/custom/phaser-arcade-physics.min.js"></script>
+    <script>
+        window.PhaserGlobal = {
+            hideBanner:true
+        };
+    </script>
     <script src="components/node-uuid/uuid.js"></script>
     <script src="dist/bundle.js"></script>
 </body>
