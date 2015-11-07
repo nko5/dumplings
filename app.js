@@ -10,25 +10,54 @@ var port = 8080;
 app.use(express.static(__dirname + '/public'));
 
 http.listen(port, function () {
-    console.log('listening on *:' + port);
+    console.log('Listening on *:' + port);
 });
 
 
 // Socket.io
 
+var clients = [];
+
+function cleanClients() {
+    clients.forEach(function (client) {
+        if (client.disconnected && client.player) {
+            console.log("[!] remove client: %s (%s)", client.player.name, client.player.id);
+            clients.splice(clients.indexOf(client), 1);
+        }
+    });
+}
+
 io.on('connection', function (socket) {
-    console.log('[+] connection');
+    cleanClients();
+
+    var index = clients.push(socket);
+
+    console.log('[$] socket: connection (%d)', clients.length);
 
     socket.on('player:new', function (player) {
-        console.log('[*] player:new', player);
+        console.log('[$] socket: player:new: "%s"', player.name);
         io.emit('player:new', player);
+
+        clients[index - 1].player = player;
     });
 
     socket.on('player:move', function (player) {
         io.emit('player:move', player);
     });
 
+    io.on('error', function () {
+        console.log('[$] socket: error');
+    });
+
     io.on('disconnect', function () {
-        console.log('[-] disconnect');
+        console.log('[$] socket: disconnect');
+    });
+
+    io.on('end', function () {
+        console.log('[$] socket: end');
+    });
+
+    io.on('close', function () {
+        console.log('[$] socket: close');
     });
 });

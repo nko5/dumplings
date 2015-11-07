@@ -23,6 +23,8 @@ export default class Player {
 
         this.type = options.type;
         this.defaultPosition = this._getCharacter().position;
+
+        console.log('[+] new player', options);
     }
 
     characters() {
@@ -67,7 +69,6 @@ export default class Player {
     }
 
     _getRandomCharacter() {
-        console.debug('random character');
         let types = this.characters();
         let index = this.game.rnd.integerInRange(0, types.length - 1);
         return types[index];

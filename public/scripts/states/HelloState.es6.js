@@ -29,11 +29,9 @@ export default class HelloState extends AbstractState {
                 if (player.id === this.game.player.id) {
                     // The same player. Ignore it.
                     this.game.player.id = player.id;
-                    console.debug('[?] ignore user (the same id)');
+                    // console.log('[?] ignore user (the same id)');
                     return;
                 }
-
-                console.info('[+] new player', player);
 
                 this.game.opponents[player.id] = new Player(this.game, {
                     id: player.id,
@@ -50,7 +48,7 @@ export default class HelloState extends AbstractState {
             this.game.socket.on('player:move', (player) => {
                 if (player.id === this.game.player.id) {
                     // The same player. Ignore it.
-                    // console.debug('[?] ignore my moves');
+                    // console.log('[?] ignore my moves');
                     return;
                 }
 
@@ -68,11 +66,15 @@ export default class HelloState extends AbstractState {
             this.game.socket.emit('player:new', this.game.player.toJSON());
 
             this.game.socket.on('connect', () => {
-                console.log('[+] connect');
+                console.log('[$] socket: connect');
             });
 
             this.game.socket.on('disconnect', () => {
-                console.log('[-] disconnect');
+                console.log('[$] socket: disconnect');
+            });
+
+            this.game.socket.on('error', () => {
+                console.log('[$] socket: error');
             });
 
             this.state.start('Game');

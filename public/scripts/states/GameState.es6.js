@@ -93,7 +93,7 @@ export default class GameState extends AbstractState {
                 // Uncaught Error: getChildAt: Supplied index 0 does not exist in the child list, or the supplied DisplayObject must be a child of the caller
                 items.removeChildAt(index);
             } catch (ignore) {
-                console.warn('Error happen during randomly removed items');
+                console.log('[-] Error happen during randomly removed items');
             }
 
             board.updateAvailableScore(items.length * Settings.ITEM_POINT);
