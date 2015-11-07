@@ -19,7 +19,7 @@ export default class GameState extends AbstractState {
         this._setupWorld();
         this.game.board.render();
         this.game.player.render({
-            type: 'yellow'
+            type: 'blue'
         });
         this._setupItems();
 

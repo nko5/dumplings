@@ -19,6 +19,16 @@ export default class Player {
                 type: 'yellow',
                 stay: [17, 20, 22, 26, 29].map((i) => i - 1),
                 walk: [16, 19, 23, 25, 28, 30].map((i) => i - 1)
+            },
+            {
+                type: 'green',
+                stay: [42, 62].map((i) => i - 1),
+                walk: [43, 45, 47, 49, 50, 51].map((i) => i - 1)
+            },
+            {
+                type: 'blue',
+                stay: [53, 55, 57, 59].map((i) => i - 1),
+                walk: [52, 54, 56, 58, 60, 61].map((i) => i - 1)
             }
         ]
     }
