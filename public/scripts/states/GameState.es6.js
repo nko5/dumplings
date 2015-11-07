@@ -1,3 +1,4 @@
+import Settings from '../config';
 import AbstractState from './AbstractState';
 
 export default class GameState extends AbstractState {
@@ -59,7 +60,7 @@ export default class GameState extends AbstractState {
     _setupRandomAppear() {
         let clock = this.time.create();
 
-        clock.repeat(1000, Infinity, () => {
+        clock.repeat(Settings.INTERVAL_ITEMS_APPEAR, Infinity, () => {
             let x = this.rnd.integerInRange(1, 49);
             let y = this.rnd.integerInRange(1, 24);
 
@@ -72,7 +73,7 @@ export default class GameState extends AbstractState {
     _setupRandomDisappear() {
         let clock = this.time.create();
 
-        clock.repeat(1000, Infinity, () => {
+        clock.repeat(Settings.INTERVAL_ITEMS_DISAPPEAR, Infinity, () => {
             let index = this.rnd.integerInRange(0, this.game.items.length - 1);
             this.game.items.removeChildAt(index);
         });
