@@ -1,4 +1,5 @@
 import Settings from '../config';
+import Player from '../models/Player';
 import AbstractState from './AbstractState';
 
 export default class GameState extends AbstractState {
@@ -18,8 +19,9 @@ export default class GameState extends AbstractState {
     create() {
         this._setupWorld();
         this.game.board.render();
+
         this.game.player.render({
-            type: 'blue'
+            type: Player.getRandomType()
         });
         this._setupItems();
 

@@ -19,7 +19,7 @@ io.on('connection', function (socket) {
 
     socket.on('new:player', function (player) {
         console.log('[*] new:player', player);
-        // io.emit('chat message', msg);
+        io.emit('new:player', player);
     });
 
     io.on('disconnect', function () {

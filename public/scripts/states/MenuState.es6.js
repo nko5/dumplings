@@ -16,6 +16,13 @@ export default class MenuState extends AbstractState {
             this.game.player = new Player(this.game);
 
             this.game.socket = io();
+
+            this.game.socket.on('new:player', (player) => {
+                if (player.name === this.game.player.name) {
+                    console.debug('[?] ignore user (the same name)');
+                }
+            });
+
             this.game.socket.emit('new:player', { name: this.game.player.name });
 
             this.game.socket.on('connect', () => {

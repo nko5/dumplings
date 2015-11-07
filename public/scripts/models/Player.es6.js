@@ -8,7 +8,7 @@ export default class Player {
         this.game = game;
     }
 
-    types() {
+    static types() {
         return [
             {
                 type: 'red',
@@ -33,8 +33,16 @@ export default class Player {
         ]
     }
 
+    static getRandomType() {
+        let types = Player.types();
+        let seed = [(Date.now() * Math.random()).toString()];
+        let rnd = new Phaser.RandomDataGenerator(seed);
+        let index = rnd.integerInRange(0, types.length - 1);
+        return types[index].type;
+    }
+
     render(options) {
-        let type = this.types().find((item) => {
+        let type = Player.types().find((item) => {
             return (item.type == options.type);
         });
 
