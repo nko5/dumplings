@@ -19,10 +19,8 @@ export default class GameState extends AbstractState {
     create() {
         this._setupWorld();
         this.game.board.render();
+        this.game.player.render();
 
-        this.game.player.render({
-            type: Player.getRandomType()
-        });
         this._setupItems();
 
         this.game.board.updatePlayerScore(this.game.player);

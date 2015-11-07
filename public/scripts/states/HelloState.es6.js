@@ -17,20 +17,39 @@ export default class HelloState extends AbstractState {
 
         this.displayClick(() => {
             this.game.board = new Board(this.game);
-            this.game.player = new Player(this.game, this.name);
+
+            this.game.opponents = {};
+            this.game.player = new Player(this.game, {
+                name: this.name
+            });
 
             this.game.socket = io();
 
             this.game.socket.on('new:player', (player) => {
                 if (player.name === this.game.player.name) {
+                    this.game.player.id = player.id;
                     console.debug('[?] ignore user (the same name)');
                 } else {
                     console.info('[+] new player', player);
+
+                    this.game.opponents[player.id] = new Player(this.game, {
+                        name: player.name,
+                        type: player.type,
+                        score: player.score,
+                        x: player.x,
+                        y: player.y
+                    });
+                    this.game.opponents[player.id].render();
+                    this.game.opponents[player.id].sprite.body.allowGravity = false;
                 }
             });
 
             this.game.socket.emit('new:player', {
-                name: this.game.player.name
+                name: this.game.player.name,
+                type: this.game.player.type,
+                score: this.game.player.score,
+                x: this.game.player.x,
+                y: this.game.player.y
             });
 
             this.game.socket.on('connect', () => {
@@ -53,13 +72,5 @@ export default class HelloState extends AbstractState {
             y: (this.game.height / 2) + 50,
             font: 'bold 32px Verdana'
         });
-    }
-
-    update() {
-
-    }
-
-    render() {
-
     }
 }
