@@ -2,6 +2,7 @@ import Item from './Item';
 import Player from './Player';
 import Message from '../message';
 import Settings from '../config';
+import Localization from '../../locale/en.json';
 
 export default class SocketBridge {
     game = null;
@@ -100,7 +101,7 @@ export default class SocketBridge {
             console.log('[$] socket: disconnect');
 
             new Message(this.game, {
-                message: 'ERROR: Please reload game',
+                message: Localization.ERROR,
                 type: 'error',
                 callback: () => {
                     window.location.reload();
@@ -158,10 +159,19 @@ export default class SocketBridge {
             console.log('socket on: round:end');
 
             let player = _.findWhere(results, { id: this.game.player.id });
+            let message = null;
+            let type = null;
+
+            if (player === undefined) {
+                message = Localization.ROUND_START;
+            } else {
+                message = player.message;
+                type = 'info';
+            }
 
             new Message(this.game, {
-                message: player.message,
-                type: 'info',
+                message: message,
+                type: type,
                 callback: () => {
                     console.log('socket emit: round:restart');
                     this.io.emit('round:restart', this.game.player);

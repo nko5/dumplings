@@ -2,6 +2,7 @@ var uuid = require('node-uuid');
 var _ = require('underscore');
 var Settings = require('./config');
 var availableItems = require('./defaults-items-positions.json');
+var Localization = require('../public/locale/en.json');
 
 availableItems.forEach((o) => {
     o.id = uuid.v4();
@@ -14,6 +15,7 @@ function randomInteger(low, high) {
 module.exports = function (io) {
     var clients = [];
     var items = [];
+    var isStarted = false;
 
     function setPlayerClient(index, player) {
         var currentPlayer = clients[index].player;
@@ -79,11 +81,11 @@ module.exports = function (io) {
         if (list.length > 1) {
             // Only winner has another message
             if (list[0].score > list[1].score) {
-                list[0].message = 'Winner!';
+                list[0].message = Localization.WINNER;
             }
         } else {
             // If only one player played - he is winner
-            list[0].message = 'Winner!';
+            list[0].message = Localization.SINGLE_WINNER;
         }
 
         return list;
@@ -139,6 +141,8 @@ module.exports = function (io) {
     }());
 
     function startRound(label, callback) {
+        isStarted = true;
+
         console.log('start round (from "%s")', label);
 
         var tick = 0;
@@ -160,10 +164,20 @@ module.exports = function (io) {
         }, 1000);
     }
 
+    function endRound() {
+        isStarted = false;
+        ItemsClock.stop();
+
+        console.log('[$] socket emit: round:end');
+        io.emit('round:end', calculateResults());
+    }
+
     io.on('connection', function (socket) {
         var length = clients.push(socket);
 
         console.log('[$] socket: connection (%d)', getConnectedPlayers().length);
+
+        io.emit('round:status', isStarted, { id: socket.id });
 
         socket.on('player:new', function (player) {
             setPlayerClient(length - 1, player);
@@ -213,12 +227,7 @@ module.exports = function (io) {
 
             ItemsClock.start();
 
-            startRound('round:start', () => {
-                ItemsClock.stop();
-
-                console.log('[$] socket emit: round:end');
-                io.emit('round:end', calculateResults());
-            });
+            startRound('round:start', endRound);
         });
 
         socket.on('round:restart', function () {
@@ -233,12 +242,7 @@ module.exports = function (io) {
 
             ItemsClock.start();
 
-            startRound('round:restart', () => {
-                ItemsClock.stop();
-
-                console.log('[$] socket emit: round:end');
-                io.emit('round:end', calculateResults());
-            });
+            startRound('round:restart', endRound);
         });
     });
 

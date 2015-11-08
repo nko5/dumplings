@@ -5,6 +5,7 @@ import Board from '../models/Board';
 import Player from '../models/Player';
 import SocketBridge from '../models/SocketBridge';
 import AbstractState from './AbstractState';
+import Localization from '../../locale/en.json';
 
 export default class CollectingState extends AbstractState {
     create() {
@@ -24,12 +25,28 @@ export default class CollectingState extends AbstractState {
         this.game.board.updatePlayerScore(this.game.player);
         this.game.board.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
 
-        new Message(this.game, {
-            message: 'Click to start',
-            callback: () => {
+        this.game.socket.io.on('round:status', (isStarted, handshake) => {
+            let message = null;
+            let callback = () => {
                 console.log('socket emit: round:start');
                 this.game.socket.io.emit('round:start', this.game.player);
+            };
+
+            if (handshake.id !== this.game.socket.io.id) {
+                console.log('[?] ignore others client into gets info about status');
+                return;
             }
+
+            if (isStarted) {
+                message = Localization.ROUND_JOIN;
+            } else {
+                message = Localization.ROUND_START;
+            }
+
+            new Message(this.game, {
+                message: message,
+                callback: callback
+            });
         });
     }
 
