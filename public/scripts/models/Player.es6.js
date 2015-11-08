@@ -31,6 +31,9 @@ export default class Player {
         this.type = options.type;
         this.defaultPosition = this._getCharacter().position;
 
+        this.x = options.x || this.defaultPosition.x;
+        this.y = options.y || this.defaultPosition.y;
+
         console.log('[+] new player', options);
     }
 
@@ -89,6 +92,13 @@ export default class Player {
 
     render() {
         let character = this._getCharacter();
+
+        this._setupPlayerSprite(character);
+        this._setupPlayerLabel(character);
+        this._enablePhysics();
+    }
+
+    _setupPlayerSprite(character) {
         let sprite = this.sprite = this.game.add.sprite(this.defaultPosition.x, this.defaultPosition.y, 'mms');
         sprite.name = 'player';
         sprite.anchor.setTo(0.5, 1);
@@ -97,16 +107,26 @@ export default class Player {
         sprite.animations.add('walk', character.walk, 8, true, true);
 
         sprite.animations.play('stay');
+    }
 
-        let label = this.label = this.game.add.text(this.x, this.y - this.sprite.height - Settings.MARGIN_BETWEEN_PLAYER_AND_LABEL, this.name, {
+    _buildPlayerLabelText() {
+        return `${this.name} (${this.x}, ${this.y})`;
+    }
+
+    _setupPlayerLabel(character) {
+        let message = this._buildPlayerLabelText();
+
+        let label = this.label = this.game.add.text(this.x, this.y - this.sprite.height - Settings.MARGIN_BETWEEN_PLAYER_AND_LABEL, message, {
             font: "lighter 11px Verdana",
             fill: character.type,
             boundsAlignH: "center",
             boundsAlignV: "middle"
         });
         label.anchor.setTo(0.5, 0.5);
+    }
 
-        this._enablePhysics();
+    _updateLabel() {
+        this.label.setText(this._buildPlayerLabelText());
     }
 
     _enablePhysics() {
@@ -124,8 +144,8 @@ export default class Player {
         this.score += score;
     }
 
-    remove() {
-        console.log('[+] remove player', { id: this.id, name: this.name, type: this.type });
+    destroy() {
+        console.log('[+] destroy player', { id: this.id, name: this.name, type: this.type });
 
         this.sprite.destroy();
         this.label.destroy();
@@ -140,8 +160,14 @@ export default class Player {
     }
 
     set x(value) {
+        if (this.sprite == null) {
+            this.defaultPosition.x = value;
+            return;
+        }
+
         this.sprite.x = value;
         this.label.x = value;
+        this._updateLabel();
     }
 
     get y() {
@@ -153,8 +179,14 @@ export default class Player {
     }
 
     set y(value) {
+        if (this.sprite == null) {
+            this.defaultPosition.y = value;
+            return;
+        }
+
         this.sprite.y = value;
         this.label.y = value - this.sprite.height - Settings.MARGIN_BETWEEN_PLAYER_AND_LABEL;
+        this._updateLabel();
     }
 
     toJSON() {

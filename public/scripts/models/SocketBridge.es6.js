@@ -13,30 +13,43 @@ export default class SocketBridge {
     }
 
     setup() {
-        this.io.on('player:new', (playerJSON, players) => {
+        this.io.on('player:new', (playerJSON, opponents) => {
             if (playerJSON.id === this.game.player.id) {
                 // The same player. Ignore it.
                 this.game.player.id = playerJSON.id;
                 // console.log('[?] ignore creates user (the same id)');
+            } else {
+                // console.log('playerJSON (%s, %s)', playerJSON.x, playerJSON.y);
             }
 
-            players.forEach((playerJSON) => {
-                if (playerJSON === null) {
+            opponents.forEach((opponentJSON) => {
+                if (opponentJSON === null) {
                     // Sometimes, from server we get null object.
                     return;
                 }
 
-                if (playerJSON.id === this.game.player.id) {
+                if (opponentJSON.id === this.game.player.id) {
                     // console.log('[?] ignore creates the same user (%s)', playerJSON.id);
                     return;
                 }
 
-                this.game.opponents[playerJSON.id] = Player.create(this.game, playerJSON);
+                // console.log('opponentJSON (%s, %s)', opponentJSON.x, opponentJSON.y);
+
+                this.game.opponents[opponentJSON.id] = Player.create(this.game, opponentJSON);
             });
         });
 
         this.io.on('player:remove', (playerJSON) => {
-            this.game.opponents[playerJSON.id].remove();
+            let opponent = this.game.opponents[playerJSON.id];
+
+            if (!opponent) {
+                // Not yet created (rendered).
+                console.log('[?] try remove but, not yet created (%s)', playerJSON.id);
+                return;
+            }
+
+            opponent.destroy();
+            delete this.game.opponents[playerJSON.id];
         });
 
         this.io.on('player:move', (playerJSON) => {
@@ -50,7 +63,7 @@ export default class SocketBridge {
 
             if (!opponent) {
                 // Not yet created (rendered).
-                console.log('[?] not yet created (%s)', playerJSON.id);
+                console.log('[?] try move but, not yet created (%s)', playerJSON.id);
                 return;
             }
 

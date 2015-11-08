@@ -24,10 +24,11 @@ export default class HelloState extends AbstractState {
         this.displayClick(() => {
             this.game.board = new Board(this.game);
 
-            this.game.opponents = {};
             this.game.player = new Player(this.game, {
                 name: this.name
             });
+
+            this.game.opponents = {};
 
             this.game.socket = new SocketBridge(this.game);
 

@@ -18,7 +18,7 @@ http.listen(port, function () {
 
 var clients = [];
 
-function appendClients(index, player) {
+function setPlayerClient(index, player) {
     clients[index - 1].player = player;
 }
 
@@ -47,13 +47,14 @@ io.on('connection', function (socket) {
     console.log('[$] socket: connection (%d)', clients.length);
 
     socket.on('player:new', function (player) {
-        appendClients(index, player);
+        setPlayerClient(index, player);
 
         console.log('[$] socket: player:new: "%s"', player.name);
         io.emit('player:new', player, dumpConnectedPlayers());
     });
 
     socket.on('player:move', function (player) {
+        setPlayerClient(index, player);
         io.emit('player:move', player);
     });
 
@@ -62,12 +63,15 @@ io.on('connection', function (socket) {
     });
 
     socket.on('disconnect', function () {
-        console.log('[$] socket: disconnect');
+        var name = 'unknown';
         cleanClients();
 
         if (socket.player) {
             io.emit('player:remove', socket.player);
+            name = socket.player.name;
         }
+
+        console.log('[$] socket: disconnect (%s)', name);
     });
 
     socket.on('end', function () {
