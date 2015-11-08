@@ -23,6 +23,7 @@ export default class Player {
 
         this.id = options.id;
         this.name = options.name;
+        this.score = options.score || this.score;
 
         if (!options.type) {
             options.type = this._getRandomCharacter().type;
@@ -34,7 +35,7 @@ export default class Player {
         this.x = options.x || this.defaultPosition.x;
         this.y = options.y || this.defaultPosition.y;
 
-        console.log('[+] new player', options);
+        // console.log('[+] new player', options);
     }
 
     characters() {
@@ -111,7 +112,8 @@ export default class Player {
 
     _buildPlayerLabelText() {
         // return `${this.name} (${this.x}, ${this.y})`;
-        return `${this.name}`;
+        // return `${this.name}`;
+        return `${this.name} - ${this.score}pkt`;
     }
 
     _setupPlayerLabel(character) {
@@ -146,7 +148,7 @@ export default class Player {
     }
 
     destroy() {
-        console.log('[+] destroy player', { id: this.id, name: this.name, type: this.type });
+        // console.log('[+] destroy player', { id: this.id, name: this.name, type: this.type });
 
         this.sprite.destroy();
         this.label.destroy();

@@ -1,17 +1,15 @@
-import HelloState from './states/HelloState';
-import GameState from './states/GameState';
+import BootState from './states/BootState';
+import CollectingState from './states/CollectingState';
 
 export default class Game {
-    game = null;
+    constructor(options) {
+        let phaser = new Phaser.Game(800, 450, Phaser.AUTO, 'area');
 
-    constructor() {
-        this.game = new Phaser.Game(800, 450, Phaser.AUTO, 'area');
+        phaser.username = options.username;
 
-        this.game.state.add('Hello', HelloState);
-        this.game.state.add('Game', GameState);
-    }
+        phaser.state.add('Boot', BootState);
+        phaser.state.add('Collecting', CollectingState);
 
-    start(options) {
-        this.game.state.start('Hello', true, false, options);
+        phaser.state.start('Boot');
     }
 }

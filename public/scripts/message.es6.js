@@ -1,34 +1,65 @@
+let ESCAPE_KEY = 32;
+let ENTER_KEY = 13;
+
 export default class Message {
     game = this;
-    $messages = null;
 
-    constructor(game, options) {
+    constructor(game, { message, type, callback }) {
         this.game = game;
-        this.$messages = document.querySelector('#messages');
+        let $messages = document.querySelector('#messages');
 
-        // Disable keyboard
-        this.game.input.enabled = false;
-
-        this._setupDOM(options);
-    }
-
-    _setupDOM({ message, type, callback }) {
-        this.$messages.innerHTML = '';
-        this.$messages.style.display = 'block';
+        Message.block(this.game);
 
         let $message = document.createElement('p');
         $message.textContent = message;
-        $message.addEventListener('click', () => {
-            // Enable keyboard
-            this.game.input.enabled = true;
-
-            // Hidden message
-            this.$messages.style.display = 'none';
-
-            callback();
-        });
         $message.classList.add(`message-${type}`);
 
-        this.$messages.appendChild($message);
+        let close = () => {
+            Message.clear(this.game);
+            callback();
+        };
+
+        function keyDownHandler(evt) {
+            let key = evt.keyCode;
+
+            switch (key) {
+                case ESCAPE_KEY:
+                case ENTER_KEY:
+                    close();
+                    document.removeEventListener('keydown', keyDownHandler);
+                    break;
+
+                // no default
+            }
+        }
+
+        $message.addEventListener('click', close);
+        document.addEventListener('keydown', keyDownHandler, false);
+
+        $messages.appendChild($message);
+    }
+
+    static block(game) {
+        let $messages = document.querySelector('#messages');
+
+        $messages.innerHTML = '';
+
+        // Display message
+        $messages.style.display = 'block';
+
+        // Disable keyboard
+        game.input.enabled = false;
+    }
+
+    static clear(game) {
+        let $messages = document.querySelector('#messages');
+
+        $messages.innerHTML = '';
+
+        // Hidden message
+        $messages.style.display = 'none';
+
+        // Enable keyboard
+        game.input.enabled = true;
     }
 }

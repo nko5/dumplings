@@ -71,6 +71,7 @@ h2 {
     font-family: Verdana, serif;
     color: #fff;
     cursor: pointer;
+    background: rgba(227, 167, 6, 0.8);
 }
 
 #messages p.message-error {
@@ -82,6 +83,7 @@ h2 {
 }
 
 #area {
+    background-color: #000;
     border: 1px solid #000;
     box-shadow: 0 0 20px #000;
     border-radius: 6px;

@@ -37,34 +37,10 @@ export default class Board {
     }
 
     _displayClock() {
-        let label = this.game.add.text(this.game.width / 2, this.game.height - Settings.MARGIN_BETWEEN_BOARD_TEXT_TOP, '00:00', this.style);
+        let label = this.game.add.text(this.game.width / 2, this.game.height - Settings.MARGIN_BETWEEN_BOARD_TEXT_TOP, '--:--', this.style);
         label.anchor.setTo(0.5, 0);
         label.addColor('#F9A605', 0);
         return label;
-    }
-
-    startClock(time, callback) {
-        let clock = this.game.time.create();
-        let remain = time;
-
-        // Wait a second on '00:00'
-        time++;
-
-        clock.repeat(1000, time, () => {
-            this.clockLabel.setText(Utilities.formatSeconds(remain));
-
-            if (remain === 0) {
-                this.clockLabel.addColor('#ff0000', 0);
-
-                if (typeof callback === 'function') {
-                    callback();
-                }
-            }
-
-            remain--;
-        });
-
-        clock.start();
     }
 
     updatePlayerScore(player) {
@@ -80,5 +56,9 @@ export default class Board {
 
     updateAvailableScore(max) {
         this.availableScore.text = `Available points: ${max}`;
+    }
+
+    updateClockLabel(remaining) {
+        this.clockLabel.setText(Utilities.formatSeconds(remaining));
     }
 }

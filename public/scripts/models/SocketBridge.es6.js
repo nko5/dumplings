@@ -10,8 +10,6 @@ export default class SocketBridge {
     constructor(game) {
         this.game = game;
         this.io = io();
-
-        this.setup();
     }
 
     setup() {
@@ -53,40 +51,54 @@ export default class SocketBridge {
             });
         });
 
-        this.io.on('player:remove', (playerJSON) => {
-            let opponent = this.game.opponents[playerJSON.id];
+        this.io.on('player:remove', (opponentJSON) => {
+            let opponent = this.game.opponents[opponentJSON.id];
 
             if (!opponent) {
                 // Not yet created (rendered).
-                console.log('[?] try remove but, not yet created (%s)', playerJSON.id);
+                console.log('[?] try remove but, not yet created (%s)', opponentJSON.id);
                 return;
             }
 
             opponent.destroy();
-            delete this.game.opponents[playerJSON.id];
+            delete this.game.opponents[opponentJSON.id];
         });
 
-        this.io.on('player:move', (playerJSON) => {
-            if (playerJSON.id === this.game.player.id) {
+        this.io.on('player:move', (opponentJSON) => {
+            if (opponentJSON.id === this.game.player.id) {
                 // The same player. Ignore it.
-                // console.log('[?] ignore my moves (%s)', playerJSON.id);
+                // console.log('[?] ignore my moves (%s)', opponentJSON.id);
                 return;
             }
 
-            let opponent = this.game.opponents[playerJSON.id];
+            let opponent = this.game.opponents[opponentJSON.id];
 
             if (!opponent) {
                 // Not yet created (rendered).
-                console.log('[?] try move but, not yet created (%s)', playerJSON.id);
+                console.log('[?] try move but, not yet created (%s)', opponentJSON.id);
                 return;
             }
 
-            this.game.opponents[playerJSON.id].x = playerJSON.x;
-            this.game.opponents[playerJSON.id].y = playerJSON.y;
+            this.game.opponents[opponentJSON.id].x = opponentJSON.x;
+            this.game.opponents[opponentJSON.id].y = opponentJSON.y;
         });
 
-        this.io.on('connect', () => {
-            console.log('[$] socket: connect');
+        this.io.on('player:score', (opponentJSON) => {
+            if (opponentJSON.id === this.game.player.id) {
+                // The same player. Ignore it.
+                // console.log('[?] ignore update score myself (%s)', opponentJSON.id);
+                return;
+            }
+
+            let opponent = this.game.opponents[opponentJSON.id];
+
+            if (!opponent) {
+                // Not yet created (rendered).
+                console.log('[?] try update score but, not yet created (%s)', opponentJSON.id);
+                return;
+            }
+
+            this.game.opponents[opponentJSON.id].score = opponentJSON.score;
         });
 
         this.io.on('disconnect', () => {
@@ -121,6 +133,36 @@ export default class SocketBridge {
             });
 
             this.game.board.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
+        });
+
+        this.io.on('round:tick', (remaining) => {
+            // console.log('socket on: round:tick');
+            this.game.board.updateClockLabel(remaining);
+        });
+
+        this.io.on('round:start', (player) => {
+            console.log('socket on: round:start');
+            Message.clear(this.game);
+        });
+
+        this.io.on('round:restart', (player) => {
+            console.log('socket on: round:restart');
+            Message.clear(this.game);
+        });
+
+        this.io.on('round:end', (results) => {
+            console.log('socket on: round:end');
+
+            let player = _.findWhere(results, { id: this.game.player.id });
+
+            new Message(this.game, {
+                message: player.message,
+                type: 'info',
+                callback: () => {
+                    console.log('socket emit: round:restart');
+                    this.io.emit('round:restart');
+                }
+            });
         });
     }
 }

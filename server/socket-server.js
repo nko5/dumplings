@@ -15,15 +15,13 @@ module.exports = function (io) {
     var items = [];
 
     function setPlayerClient(index, player) {
-        clients[index].player = player;
-    }
+        var currentPlayer = clients[index].player;
 
-    function cleanClients() {
-        clients.forEach(function (client) {
-            if (client.disconnected) {
-                clients.splice(clients.indexOf(client), 1);
-            }
-        });
+        if (currentPlayer && currentPlayer.id !== player.id) {
+            throw new Error('ERROR: try to overwrite another player');
+        }
+
+        clients[index].player = player;
     }
 
     function dumpConnectedPlayers() {
@@ -33,6 +31,44 @@ module.exports = function (io) {
                 return client.player;
             }
         });
+    }
+
+    function calculateResults() {
+        var list = [];
+
+        clients.forEach(function (client) {
+            if (client.connected && client.player) {
+                list.push({
+                    id: client.player.id,
+                    name: client.player.name,
+                    score: client.player.score,
+                    message: 'Game Over'
+                });
+            }
+        });
+
+        list.sort((a, b) => {
+            if (a.score < b.score) {
+                return 1;
+            } else if (a.score > b.score) {
+                return -1;
+            } else {
+                return 0;
+            }
+        });
+
+        // For many players get only first
+        if (list.length > 1) {
+            // Only winner has another message
+            if (list[0].score > list[1].score) {
+                list[0].message = 'Winner!';
+            }
+        } else {
+            // If only one player played - he is winner
+            list[0].message = 'Winner!';
+        }
+
+        return list;
     }
 
     function sendRandomItem() {
@@ -74,9 +110,27 @@ module.exports = function (io) {
         return index;
     }
 
-    io.on('connection', function (socket) {
-        cleanClients();
+    function startRound(callback) {
+        var tick = 0;
 
+        var clock = setInterval(() => {
+            var remaining = Settings.ROUND_TIME - tick;
+
+            // console.log('socket emit: round:tick');
+            io.emit('round:tick', remaining);
+
+            tick++;
+
+            // Wait a second when '00:00'
+            if (tick === Settings.ROUND_TIME + 1) {
+                clearInterval(clock);
+
+                callback();
+            }
+        }, 1000);
+    }
+
+    io.on('connection', function (socket) {
         var length = clients.push(socket);
 
         console.log('[$] socket: connection (%d)', length);
@@ -90,6 +144,11 @@ module.exports = function (io) {
         socket.on('player:move', function (player) {
             setPlayerClient(length - 1, player);
             io.emit('player:move', player);
+        });
+
+        socket.on('player:score', function (player) {
+            setPlayerClient(length - 1, player);
+            io.emit('player:score', player);
         });
 
         socket.on('item:remove', function (itemID) {
@@ -107,7 +166,6 @@ module.exports = function (io) {
 
         socket.on('disconnect', function () {
             var name = 'unknown';
-            cleanClients();
 
             if (socket.player) {
                 io.emit('player:remove', socket.player);
@@ -117,12 +175,31 @@ module.exports = function (io) {
             console.log('[$] socket: disconnect (%s)', name);
         });
 
+        socket.on('round:start', function (player) {
+            console.log('socket on: round:start');
+
+            console.log('socket emit: round:start');
+            io.emit('round:start', player);
+
+            startRound(() => {
+                console.log('socket emit: round:end');
+                io.emit('round:end', calculateResults());
+            });
+        });
+
         socket.on('round:restart', function () {
+            console.log('socket on: round:restart');
+
             items.forEach((item) => {
                 io.emit('item:remove', item.id);
             });
 
             items = [];
+
+            startRound(() => {
+                console.log('socket emit: round:end');
+                io.emit('round:end', calculateResults());
+            });
         });
     });
 

@@ -1,33 +1,35 @@
 import Settings from '../config';
 import Message from '../message';
 import Item from '../models/Item';
+import Board from '../models/Board';
 import Player from '../models/Player';
+import SocketBridge from '../models/SocketBridge';
 import AbstractState from './AbstractState';
 
-export default class GameState extends AbstractState {
+export default class CollectingState extends AbstractState {
     create() {
+        this.game.socket = new SocketBridge(this.game);
+
+        this.game.board = new Board(this.game);
+        this.game.items = this.add.group();
+        this.game.player = new Player(this.game, { name: this.game.username });
+        this.game.opponents = {};
+        this.game.socket.setup();
+
         this._setupWorld();
 
         this.game.board.render();
         this.game.player.render();
-        this.game.items = this.add.group();
-
-        this._startRound();
 
         this.game.board.updatePlayerScore(this.game.player);
         this.game.board.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
-    }
 
-    _startRound() {
-        this.game.board.startClock(Settings.ROUND_TIME, () => {
-            new Message(this.game, {
-                message: 'Game over',
-                type: 'info',
-                callback: () => {
-                    this.game.socket.io.emit('round:restart');
-                    this._startRound();
-                }
-            });
+        new Message(this.game, {
+            message: 'Click to start',
+            callback: () => {
+                console.log('socket emit: round:start');
+                this.game.socket.io.emit('round:start', this.game.player);
+            }
         });
     }
 
@@ -64,9 +66,10 @@ export default class GameState extends AbstractState {
         this.game.physics.arcade.collide(player.sprite, this.game.items, (sprite, item) => {
             this.game.socket.io.emit('item:remove', item.id);
 
-            // item.destroy();
             player.addScore(Settings.ITEM_POINT);
             board.updatePlayerScore(player);
+
+            this.game.socket.io.emit('player:score', player);
         });
     }
 
