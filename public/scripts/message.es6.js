@@ -1,10 +1,10 @@
 export default class Message {
     $messages = null;
 
-    constructor(label, callbackk) {
+    constructor(label, callback) {
         this.$messages = document.querySelector('#messages');
 
-        this._setupDOM(label, callbackk);
+        this._setupDOM(label, callback);
     }
 
     _setupDOM(label, callback) {
