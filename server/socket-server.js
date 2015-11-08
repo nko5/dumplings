@@ -25,12 +25,25 @@ module.exports = function (io) {
         clients[index].player = player;
     }
 
-    function dumpConnectedPlayers() {
-        return clients.map(function (client) {
-            if (client.connected && client.player) {
-                // console.log('[~] dump player: %s (%s)', client.player.name, client.player.id);
-                return client.player;
+    function getConnectedClients() {
+        return _.filter(clients, function (client) {
+            return client.connected;
+        });
+    }
+
+    function getConnectedPlayers() {
+        var connectedClients = getConnectedClients();
+
+        var players = _.reject(connectedClients, function (client) {
+            return client.player === undefined;
+        });
+
+        return players.map(function (client) {
+            if (!client.player) {
+                console.log('ERR: Player is undefined', client.player);
+                process.exit(1);
             }
+            return client.player;
         });
     }
 
@@ -115,7 +128,9 @@ module.exports = function (io) {
         return index;
     }
 
-    function startRound(callback) {
+    function startRound(label, callback) {
+        console.log('start round (from "%s")', label);
+
         var tick = 0;
 
         var clock = setInterval(() => {
@@ -138,11 +153,11 @@ module.exports = function (io) {
     io.on('connection', function (socket) {
         var length = clients.push(socket);
 
-        console.log('[$] socket: connection (%d)', length);
+        console.log('[$] socket: connection (%d)', getConnectedPlayers().length);
 
         socket.on('player:new', function (player) {
             setPlayerClient(length - 1, player);
-            io.emit('player:new', player, dumpConnectedPlayers(), items);
+            io.emit('player:new', player, getConnectedPlayers(), items);
             // console.log('[$] socket: player:new: "%s"', player.name);
         });
 
@@ -181,29 +196,29 @@ module.exports = function (io) {
         });
 
         socket.on('round:start', function (player) {
-            console.log('socket on: round:start');
+            // console.log('[$] socket on: round:start');
 
-            console.log('socket emit: round:start');
+            // console.log('[$] socket emit: round:start');
             io.emit('round:start', player);
 
-            startRound(() => {
-                console.log('socket emit: round:end');
+            startRound('round:start', () => {
+                console.log('[$] socket emit: round:end');
                 io.emit('round:end', calculateResults());
             });
         });
 
         socket.on('round:restart', function () {
-            console.log('socket on: round:restart');
+            // console.log('[$] socket on: round:restart');
 
             items = [];
 
             clearPlayersScore();
 
-            console.log('socket emit: round:restart');
+            // console.log('[$] socket emit: round:restart');
             io.emit('round:restart');
 
-            startRound(() => {
-                console.log('socket emit: round:end');
+            startRound('round:restart', () => {
+                console.log('[$] socket emit: round:end');
                 io.emit('round:end', calculateResults());
             });
         });

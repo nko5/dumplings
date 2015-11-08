@@ -25,11 +25,6 @@ export default class SocketBridge {
             }
 
             opponents.forEach((opponentJSON) => {
-                if (opponentJSON === null) {
-                    // Sometimes, from server we get null object.
-                    return;
-                }
-
                 if (opponentJSON.id === this.game.player.id) {
                     // console.log('[?] ignore creates the same user (%s)', playerJSON.id);
                     return;
