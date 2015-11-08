@@ -2,6 +2,7 @@
     "name": "mms-game",
     "dependencies": {
         "phaser": "~2.4.4",
-        "node-uuid": "~1.4.3"
+        "node-uuid": "~1.4.3",
+        "complete-string": "~2.0.2"
     }
 }

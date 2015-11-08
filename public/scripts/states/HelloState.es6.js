@@ -20,7 +20,7 @@ export default class HelloState extends AbstractState {
     create() {
         this.game.stage.backgroundColor = 'rgba(0, 0, 0, 1)';
 
-        this.displayClick(() => {
+        this.displayFullscreenButton(() => {
             this.game.board = new Board(this.game);
 
             this.game.player = new Player(this.game, {
@@ -38,6 +38,7 @@ export default class HelloState extends AbstractState {
             message: `Hello "${this.name}"!`,
             y: (this.game.height / 2) - 30
         });
+
         this.displayLabel({
             message: 'Click to begin',
             y: (this.game.height / 2) + 50,

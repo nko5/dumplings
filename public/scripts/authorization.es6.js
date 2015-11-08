@@ -30,12 +30,12 @@ let valid = (name) => {
     name = name.trim();
 
     if (name.length < 2) {
-        alert('ERR: Please put at least 2 chars');
+        alert('ERROR: Please put at least 2 chars');
         return false;
     }
 
     if (name.length > 10) {
-        alert('ERR: To much chars');
+        alert('ERROR: To much chars');
         return false;
     }
 

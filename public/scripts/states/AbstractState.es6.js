@@ -10,10 +10,11 @@ export default class AbstractState extends Phaser.State {
         return label;
     }
 
-    displayClick(callback) {
-        let button = this.add.button(0, 0, '', callback, this);
+    displayFullscreenButton(callback) {
+        let button = this.add.button(0, 0, '', callback);
         button.width = this.game.width;
         button.height = this.game.height;
+        return button;
     }
 
     static isMoving(sprite) {

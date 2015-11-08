@@ -1,11 +1,12 @@
 import Settings from '../config';
+import Utilities from '../utilities';
 
 export default class Board {
     game = null;
 
     playerScore = null;
     availableScore = null;
-    clock = null;
+    clockLabel = null;
 
     style = {
         font: "bold 24px Tahoma",
@@ -22,7 +23,7 @@ export default class Board {
         // this.add.image(0, 400, 'footer_lodyas');
         this.playerScore = this._displayPlayerScore();
         this.availableScore = this._displayAvailableScore();
-        this.clock = this._displayClock();
+        this.clockLabel = this._displayClock();
     }
 
     _displayPlayerScore() {
@@ -38,7 +39,32 @@ export default class Board {
     _displayClock() {
         let label = this.game.add.text(this.game.width / 2, this.game.height - Settings.MARGIN_BETWEEN_BOARD_TEXT_TOP, '00:00', this.style);
         label.anchor.setTo(0.5, 0);
+        label.addColor('#F9A605', 0);
         return label;
+    }
+
+    startClock(time, callback) {
+        let clock = this.game.time.create();
+        let remain = time;
+
+        // Wait a second on '00:00'
+        time++;
+
+        clock.repeat(1000, time, () => {
+            this.clockLabel.setText(Utilities.formatSeconds(remain));
+
+            if (remain === 0) {
+                this.clockLabel.addColor('#ff0000', 0);
+
+                if (typeof callback === 'function') {
+                    callback();
+                }
+            }
+
+            remain--;
+        });
+
+        clock.start();
     }
 
     updatePlayerScore(player) {

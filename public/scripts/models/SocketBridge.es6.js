@@ -92,11 +92,12 @@ export default class SocketBridge {
         this.io.on('disconnect', () => {
             console.log('[$] socket: disconnect');
 
-            // Disable keyboard
-            this.game.input.enabled = false;
-
-            new Message('ERR: Please reload app', () => {
-                window.location.reload();
+            new Message(this.game, {
+                message: 'ERROR: Please reload game',
+                type: 'error',
+                callback: () => {
+                    window.location.reload();
+                }
             });
         });
 
@@ -111,7 +112,7 @@ export default class SocketBridge {
         });
 
         this.io.on('item:remove', (itemID) => {
-            console.log('[>] remove item', { id: itemID });
+            // console.log('[>] remove item', { id: itemID });
 
             this.game.items.forEach((item) => {
                 if (item.id === itemID) {

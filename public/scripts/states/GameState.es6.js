@@ -1,4 +1,5 @@
 import Settings from '../config';
+import Message from '../message';
 import Item from '../models/Item';
 import Player from '../models/Player';
 import AbstractState from './AbstractState';
@@ -25,6 +26,16 @@ export default class GameState extends AbstractState {
 
         this.game.board.updatePlayerScore(this.game.player);
         this.game.board.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
+
+        this.game.board.startClock(Settings.ROUND_TIME, () => {
+            new Message(this.game, {
+                message: 'Game over',
+                type: 'info',
+                callback: () => {
+                    window.location.reload();
+                }
+            });
+        });
     }
 
     _setupWorld() {

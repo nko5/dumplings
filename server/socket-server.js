@@ -47,7 +47,7 @@ module.exports = function (io) {
         io.emit('item:new', item);
         items.push(availableItems[index]);
 
-        console.log('[%] send new item (%s)', items.length);
+        // console.log('[%] send new item (%s)', items.length);
     }
 
     function hideRandomItem() {
@@ -59,7 +59,7 @@ module.exports = function (io) {
         io.emit('item:remove', items[index].id);
 
         items.splice(index, 1);
-        console.log('[%] remove item: random (%s)', items.length);
+        // console.log('[%] remove item: random (%s)', items.length);
     }
 
     function findIndex(itemID) {
@@ -102,7 +102,7 @@ module.exports = function (io) {
             }
 
             items.splice(index, 1);
-            console.log('[%] remove item: collect (%s)', items.length);
+            // console.log('[%] remove item: collect (%s)', items.length);
         });
 
         socket.on('disconnect', function () {

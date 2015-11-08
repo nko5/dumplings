@@ -67,11 +67,18 @@ h2 {
 }
 
 #messages p {
-    background: rgba(255, 0, 0, 0.8);
     font-size: 54px;
     font-family: Verdana, serif;
     color: #fff;
     cursor: pointer;
+}
+
+#messages p.message-error {
+    background: rgba(255, 0, 0, 0.8);
+}
+
+#messages p.message-info {
+    background: rgba(128, 190, 255, 0.8);
 }
 
 #area {
