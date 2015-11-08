@@ -12,7 +12,6 @@ export default class Player {
     };
     sprite = null;
     label = null;
-    score = 0;
 
     constructor(game, options) {
         this.game = game;
@@ -129,6 +128,10 @@ export default class Player {
     }
 
     _updateLabel() {
+        if (this.label == null) {
+            return;
+        }
+
         this.label.setText(this._buildPlayerLabelText());
     }
 
@@ -141,10 +144,6 @@ export default class Player {
 
         // Smaller sprite to be less sensitive in collisions.
         this.sprite.body.setSize(this.sprite.width - 6, this.sprite.height);
-    }
-
-    addScore(score) {
-        this.score += score;
     }
 
     destroy() {
@@ -190,6 +189,15 @@ export default class Player {
         this.sprite.y = value;
         this.label.y = value - this.sprite.height - Settings.MARGIN_BETWEEN_PLAYER_AND_LABEL;
         this._updateLabel();
+    }
+
+    set score(value) {
+        this._score = value;
+        this._updateLabel();
+    }
+
+    get score() {
+        return this._score || 0;
     }
 
     toJSON() {

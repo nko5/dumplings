@@ -33,6 +33,16 @@ module.exports = function (io) {
         });
     }
 
+    function clearPlayersScore() {
+        clients.forEach(function (client) {
+            if (client.connected && client.player) {
+                client.player.score = 0;
+
+                io.emit('player:score', client.player);
+            }
+        });
+    }
+
     function calculateResults() {
         var list = [];
 
@@ -190,11 +200,12 @@ module.exports = function (io) {
         socket.on('round:restart', function () {
             console.log('socket on: round:restart');
 
-            items.forEach((item) => {
-                io.emit('item:remove', item.id);
-            });
-
             items = [];
+
+            clearPlayersScore();
+
+            console.log('socket emit: round:restart');
+            io.emit('round:restart');
 
             startRound(() => {
                 console.log('socket emit: round:end');

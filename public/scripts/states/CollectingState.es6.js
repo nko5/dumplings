@@ -66,7 +66,7 @@ export default class CollectingState extends AbstractState {
         this.game.physics.arcade.collide(player.sprite, this.game.items, (sprite, item) => {
             this.game.socket.io.emit('item:remove', item.id);
 
-            player.addScore(Settings.ITEM_POINT);
+            player.score += Settings.ITEM_POINT;
             board.updatePlayerScore(player);
 
             this.game.socket.io.emit('player:score', player);

@@ -148,6 +148,15 @@ export default class SocketBridge {
         this.io.on('round:restart', (player) => {
             console.log('socket on: round:restart');
             Message.clear(this.game);
+
+            this.game.player.score = 0;
+
+            Object.keys(this.game.opponents).forEach((id) => {
+                this.game.opponents[id].score = 0;
+            });
+
+            this.game.items.removeAll(true);
+            this.game.board.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
         });
 
         this.io.on('round:end', (results) => {

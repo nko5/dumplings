@@ -2,5 +2,5 @@ module.exports = {
     INTERVAL_ITEMS_APPEAR: 1000,
     INTERVAL_ITEMS_DISAPPEAR: 5000,
 
-    ROUND_TIME: 5
+    ROUND_TIME: 10
 };
