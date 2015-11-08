@@ -29,7 +29,7 @@ export default class CollectingState extends AbstractState {
             let message = null;
             let callback = () => {
                 console.log('socket emit: round:start');
-                this.game.socket.io.emit('round:start', this.game.player);
+                this.game.socket.io.emit('round:start', this.game.player.toJSON());
             };
 
             if (handshake.id !== this.game.socket.io.id) {
@@ -86,7 +86,7 @@ export default class CollectingState extends AbstractState {
             player.score += Settings.ITEM_POINT;
             board.updatePlayerScore(player);
 
-            this.game.socket.io.emit('player:score', player);
+            this.game.socket.io.emit('player:score', player.toJSON());
         });
     }
 

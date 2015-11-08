@@ -179,20 +179,20 @@ module.exports = function (io) {
 
         io.emit('round:status', isStarted, { id: socket.id });
 
-        socket.on('player:new', function (player) {
-            setPlayerClient(length - 1, player);
-            io.emit('player:new', player, getConnectedPlayers(), items);
+        socket.on('player:new', function (playerJSON) {
+            setPlayerClient(length - 1, playerJSON);
+            io.emit('player:new', playerJSON, getConnectedPlayers(), items);
             // console.log('[$] socket: player:new: "%s"', player.name);
         });
 
-        socket.on('player:move', function (player) {
-            setPlayerClient(length - 1, player);
-            io.emit('player:move', player);
+        socket.on('player:move', function (playerJSON) {
+            setPlayerClient(length - 1, playerJSON);
+            io.emit('player:move', playerJSON);
         });
 
-        socket.on('player:score', function (player) {
-            setPlayerClient(length - 1, player);
-            io.emit('player:score', player);
+        socket.on('player:score', function (playerJSON) {
+            setPlayerClient(length - 1, playerJSON);
+            io.emit('player:score', playerJSON);
         });
 
         socket.on('item:remove', function (itemID) {
@@ -219,11 +219,11 @@ module.exports = function (io) {
             console.log('[$] socket: disconnect (%s)', name);
         });
 
-        socket.on('round:start', function (player) {
+        socket.on('round:start', function (playerJSON) {
             // console.log('[$] socket on: round:start');
 
             // console.log('[$] socket emit: round:start');
-            io.emit('round:start', player);
+            io.emit('round:start', playerJSON);
 
             ItemsClock.start();
 

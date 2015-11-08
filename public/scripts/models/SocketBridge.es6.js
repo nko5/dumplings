@@ -136,12 +136,12 @@ export default class SocketBridge {
             this.game.board.updateClockLabel(remaining);
         });
 
-        this.io.on('round:start', (player) => {
+        this.io.on('round:start', (playerJSON) => {
             console.log('socket on: round:start');
             Message.clear(this.game);
         });
 
-        this.io.on('round:restart', (player) => {
+        this.io.on('round:restart', (playerJSON) => {
             console.log('socket on: round:restart');
             Message.clear(this.game);
 
@@ -174,7 +174,7 @@ export default class SocketBridge {
                 type: type,
                 callback: () => {
                     console.log('socket emit: round:restart');
-                    this.io.emit('round:restart', this.game.player);
+                    this.io.emit('round:restart', this.game.player.toJSON());
                 }
             });
         });
