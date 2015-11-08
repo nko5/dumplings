@@ -2,7 +2,7 @@ module.exports = function (io) {
     var clients = [];
 
     function setPlayerClient(index, player) {
-        clients[index - 1].player = player;
+        clients[index].player = player;
     }
 
     function cleanClients() {
@@ -25,24 +25,20 @@ module.exports = function (io) {
     io.on('connection', function (socket) {
         cleanClients();
 
-        var index = clients.push(socket);
+        var length = clients.push(socket);
 
-        console.log('[$] socket: connection (%d)', clients.length);
+        console.log('[$] socket: connection (%d)', length);
 
         socket.on('player:new', function (player) {
-            setPlayerClient(index, player);
+            setPlayerClient(length - 1, player);
 
             console.log('[$] socket: player:new: "%s"', player.name);
             io.emit('player:new', player, dumpConnectedPlayers());
         });
 
         socket.on('player:move', function (player) {
-            setPlayerClient(index, player);
+            setPlayerClient(length - 1, player);
             io.emit('player:move', player);
-        });
-
-        socket.on('error', function () {
-            console.log('[$] socket: error');
         });
 
         socket.on('disconnect', function () {
@@ -55,14 +51,6 @@ module.exports = function (io) {
             }
 
             console.log('[$] socket: disconnect (%s)', name);
-        });
-
-        socket.on('end', function () {
-            console.log('[$] socket: end');
-        });
-
-        socket.on('close', function () {
-            console.log('[$] socket: close');
         });
     });
 };
