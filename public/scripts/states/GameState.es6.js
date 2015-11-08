@@ -35,45 +35,6 @@ export default class GameState extends AbstractState {
         this.worldLayer.resizeWorld();
     }
 
-    _setupRandomAppear() {
-        let board = this.game.board;
-        let items = this.game.items;
-        let clock = this.time.create();
-
-        clock.repeat(Settings.INTERVAL_ITEMS_APPEAR, Infinity, () => {
-            let x = this.rnd.integerInRange(1, 49);
-            let y = this.rnd.integerInRange(1, 24);
-
-            this.game.items.add(Item.create(this.game, { x, y }));
-
-            board.updateAvailableScore(items.length * Settings.ITEM_POINT);
-        });
-
-        clock.start();
-    }
-
-    _setupRandomDisappear() {
-        let board = this.game.board;
-        let items = this.game.items;
-        let clock = this.time.create();
-
-        clock.repeat(Settings.INTERVAL_ITEMS_DISAPPEAR, Infinity, () => {
-            let index = this.rnd.integerInRange(0, items.length - 1);
-
-            try {
-                // Hack which resolves:
-                // Uncaught Error: getChildAt: Supplied index 0 does not exist in the child list, or the supplied DisplayObject must be a child of the caller
-                items.removeChildAt(index);
-            } catch (ignore) {
-                console.log('[-] Error happen during randomly removed items');
-            }
-
-            board.updateAvailableScore(items.length * Settings.ITEM_POINT);
-        });
-
-        clock.start();
-    }
-
     update() {
         this._handleCollision();
         this._handleKeyboard();

@@ -1,11 +1,10 @@
 var uuid = require('node-uuid');
+var Settings = require('./config');
 var availableItems = require('./defaults-items-positions.json');
 
 availableItems.forEach((o) => {
     o.id = uuid.v4();
 });
-
-const SEND_NEW_ITEM_DELAY = 10 * 1000;
 
 function randomInteger(low, high) {
     return Math.floor(Math.random() * (high - low + 1) + low);
@@ -38,12 +37,26 @@ module.exports = function (io) {
 
     function sendRandomItem() {
         var index = randomInteger(0, availableItems.length - 1);
+        items.push(availableItems[index]);
         io.emit('item:new', availableItems[index]);
+    }
+
+    function hideRandomItem() {
+        if (items.length === 0) {
+            return;
+        }
+
+        var index = randomInteger(0, items.length - 1);
+        io.emit('item:remove', items[index].id);
     }
 
     setInterval(function () {
         sendRandomItem();
-    }, SEND_NEW_ITEM_DELAY);
+    }, Settings.INTERVAL_ITEMS_APPEAR);
+
+    setInterval(function () {
+        hideRandomItem();
+    }, Settings.INTERVAL_ITEMS_DISAPPEAR);
 
     io.on('connection', function (socket) {
         cleanClients();

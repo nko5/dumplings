@@ -1,6 +1,7 @@
 import Item from './Item';
 import Player from './Player';
 import Message from '../message';
+import Settings from '../config';
 
 export default class SocketBridge {
     game = null;
@@ -95,6 +96,7 @@ export default class SocketBridge {
 
         this.io.on('item:new', (itemJSON) => {
             this.game.items.add(Item.create(this.game, itemJSON));
+            this.game.board.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
         });
 
         this.io.on('item:remove', (itemID) => {
@@ -104,7 +106,9 @@ export default class SocketBridge {
                 if (item.id === itemID) {
                     item.destroy();
                 }
-            })
+            });
+
+            this.game.board.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
         });
     }
 }
