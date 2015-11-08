@@ -31,7 +31,7 @@ export default class HelloState extends AbstractState {
 
             this.game.socket = io();
 
-            function addPlayer(game, playerJSON) {
+            function buildPlayer(game, playerJSON) {
                 let player = new Player(game, {
                     id: playerJSON.id,
                     name: playerJSON.name,
@@ -43,6 +43,8 @@ export default class HelloState extends AbstractState {
 
                 player.render();
                 player.sprite.body.allowGravity = false;
+
+                return player;
             }
 
             this.game.socket.on('player:new', (playerJSON, players) => {
@@ -59,17 +61,18 @@ export default class HelloState extends AbstractState {
                     }
 
                     if (playerJSON.id === this.game.player.id) {
-                        console.log('ignore the same user');
-                    } else {
-                        this.game.opponents[playerJSON.id] = addPlayer(this.game, playerJSON);
+                        console.log('[?] ignore the same user (%s)', playerJSON.id);
+                        return;
                     }
+
+                    this.game.opponents[playerJSON.id] = buildPlayer(this.game, playerJSON);
                 });
             });
 
             this.game.socket.on('player:move', (playerJSON) => {
                 if (playerJSON.id === this.game.player.id) {
                     // The same player. Ignore it.
-                    // console.log('[?] ignore my moves');
+                    console.log('[?] ignore my moves (%s)', playerJSON.id);
                     return;
                 }
 
@@ -77,6 +80,7 @@ export default class HelloState extends AbstractState {
 
                 if (!opponent) {
                     // Not yet created (rendered).
+                    console.log('[?] not yet created (%s)', playerJSON.id);
                     return;
                 }
 
@@ -93,6 +97,7 @@ export default class HelloState extends AbstractState {
             this.game.socket.on('disconnect', () => {
                 console.log('[$] socket: disconnect');
 
+                // Disable keyboard
                 this.game.input.enabled = false;
 
                 new Message('ERR: Please reload app', () => {

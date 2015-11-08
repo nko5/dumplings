@@ -138,7 +138,12 @@ export default class GameState extends AbstractState {
     }
 
     render() {
-        this.game.socket.emit('player:move', this.game.player.toJSON());
+        let player = this.game.player;
+        let sprite = player.sprite;
+
+        if (AbstractState.isMoving(sprite)) {
+            this.game.socket.emit('player:move', this.game.player.toJSON());
+        }
         // let player = this.game.player;
         // this.game.debug.bodyInfo(player.sprite, 25, 25);
         // this.game.debug.body(player.sprite);

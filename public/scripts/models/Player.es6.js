@@ -14,7 +14,11 @@ export default class Player {
     constructor(game, options) {
         this.game = game;
 
-        this.id = options.id || uuid.v4();
+        if (!options.id) {
+            options.id = uuid.v4();
+        }
+
+        this.id = options.id;
         this.name = options.name;
 
         if (!options.type) {

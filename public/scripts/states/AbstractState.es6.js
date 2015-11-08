@@ -16,4 +16,8 @@ export default class AbstractState extends Phaser.State {
         button.width = this.game.width;
         button.height = this.game.height;
     }
+
+    static isMoving(sprite) {
+        return (Math.abs(sprite.body.velocity.x) > 1 || Math.abs(sprite.body.velocity.y) > 1);
+    }
 }
