@@ -165,4 +165,20 @@ export default class Player {
             y: this.y
         }
     }
+
+    static create(game, playerJSON) {
+        let player = new Player(game, {
+            id: playerJSON.id,
+            name: playerJSON.name,
+            type: playerJSON.type,
+            score: playerJSON.score,
+            x: playerJSON.x,
+            y: playerJSON.y
+        });
+
+        player.render();
+        player.sprite.body.allowGravity = false;
+
+        return player;
+    }
 }
