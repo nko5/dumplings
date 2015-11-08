@@ -3,5 +3,6 @@
     "ROUND_START": "Click to start new round",
     "ERROR": "ERROR: Please reload game",
     "WINNER": "Winner!",
-    "SINGLE_WINNER": "Lonely winner!"
+    "SINGLE_WINNER": "Lonely winner!",
+    "GAME_OVER":"Game Over"
 }

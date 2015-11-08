@@ -68,7 +68,7 @@ module.exports = function (io) {
                     id: client.player.id,
                     name: client.player.name,
                     score: client.player.score,
-                    message: 'Game Over'
+                    message: Localization.GAME_OVER
                 });
             }
         });
@@ -118,7 +118,7 @@ module.exports = function (io) {
         // console.log('[%] remove item: random (%s)', items.length);
     }
 
-    var ItemsClock = (function () {
+    var ItemsManagerClock = (function () {
         var addItemsClock = null;
         var removeItemsClock = null;
 
@@ -166,7 +166,7 @@ module.exports = function (io) {
 
     function endRound() {
         isStarted = false;
-        ItemsClock.stop();
+        ItemsManagerClock.stop();
 
         console.log('[$] socket emit: round:end');
         io.emit('round:end', calculateResults());
@@ -225,7 +225,7 @@ module.exports = function (io) {
             // console.log('[$] socket emit: round:start');
             io.emit('round:start', playerJSON);
 
-            ItemsClock.start();
+            ItemsManagerClock.start();
 
             startRound('round -> start', endRound);
         });
@@ -240,11 +240,11 @@ module.exports = function (io) {
             // console.log('[$] socket emit: round:restart');
             io.emit('round:restart', socket.player);
 
-            ItemsClock.start();
+            ItemsManagerClock.start();
 
             startRound('round -> restart', endRound);
         });
     });
 
-    ItemsClock.start();
+    ItemsManagerClock.start();
 };

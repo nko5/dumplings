@@ -1,3 +1,11 @@
+# dumplings - nko2015
+
+> Funny game with M&Ms character. They try to get all of the items at single round.
+
+Demo: http://dumplings.2015.nodeknockout.com
+
+---
+
 ## Quick Start
 
 ~~~sh
@@ -39,11 +47,3 @@ including it in your site:
 
 If you have any issues, we're on IRC in #nodeknockout on freenode, email us at
 <help@nodeknockout.com>, or tweet [@nodeknockout](https://twitter.com/nodeknockout).
-
----
----
----
-
-## Links
-
- - http://subtlepatterns.com/thumbnail-view/
