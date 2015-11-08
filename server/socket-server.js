@@ -83,7 +83,7 @@ module.exports = function (io) {
             if (list[0].score > list[1].score) {
                 list[0].message = Localization.WINNER;
             }
-        } else {
+        } else if (list.length === 1) {
             // If only one player played - he is winner
             list[0].message = Localization.SINGLE_WINNER;
         }
