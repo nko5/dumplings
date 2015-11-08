@@ -1,3 +1,5 @@
+var items = require('./defaults-items-positions.json');
+
 module.exports = function (io) {
     var clients = [];
 
@@ -34,6 +36,8 @@ module.exports = function (io) {
 
             console.log('[$] socket: player:new: "%s"', player.name);
             io.emit('player:new', player, dumpConnectedPlayers());
+
+            io.emit('items:new', items);
         });
 
         socket.on('player:move', function (player) {

@@ -1,3 +1,4 @@
+import Item from './Item';
 import Player from './Player';
 import Message from '../message';
 
@@ -88,8 +89,13 @@ export default class SocketBridge {
             });
         });
 
-        this.io.on('error', () => {
-            console.log('[$] socket: error');
+        this.io.on('items:new', (list) => {
+            console.log('[>] new parts of items');
+
+            list.forEach((itemJSON) => {
+                // console.log('try to add new item', itemJSON);
+                Item.create(this.game, itemJSON);
+            });
         });
     }
 }

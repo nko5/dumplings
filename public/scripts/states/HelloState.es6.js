@@ -11,7 +11,6 @@ export default class HelloState extends AbstractState {
     preload() {
         this.load.image('congruent_outline', 'assets/images/congruent_outline.png');
         this.load.image('footer_lodyas', 'assets/images/footer_lodyas.png');
-        this.load.json('positions-1', 'assets/items/positions-1.json');
 
         this.load.spritesheet('gameboy-tileset', 'assets/tilesets/gameboy-tileset.png', 16, 16);
         this.load.tilemap('map-1', 'assets/maps/map-1.json', null, Phaser.Tilemap.TILED_JSON);

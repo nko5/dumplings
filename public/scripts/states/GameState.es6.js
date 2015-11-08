@@ -1,12 +1,15 @@
 import Settings from '../config';
+import Item from '../models/Item';
 import Player from '../models/Player';
 import AbstractState from './AbstractState';
 
 export default class GameState extends AbstractState {
     create() {
         this._setupWorld();
+
         this.game.board.render();
         this.game.player.render();
+        this.game.items = this.add.group();
 
         this._setupItems();
 
@@ -35,19 +38,14 @@ export default class GameState extends AbstractState {
     }
 
     _setupItems() {
-        this.game.items = this.add.group();
-        let places = this.cache.getJSON('positions-1');
-        places.forEach(({x, y}) => this._createItem(x, y));
-        this._setupRandomAppear();
-        this._setupRandomDisappear();
+        this._addItem(3, 3);
+        
+        // this._setupRandomAppear();
+        // this._setupRandomDisappear();
     }
 
-    _createItem(x, y) {
-        let item = this.add.tileSprite(x * 16, y * 16, 16, 16, 'gameboy-tileset', 2);
-        this.physics.arcade.enable(item);
-        item.name = 'item';
-        item.body.allowGravity = false;
-        this.game.items.add(item);
+    _addItem(x, y) {
+        Item.create(this.game, { x, y });
     }
 
     _setupRandomAppear() {
@@ -59,7 +57,7 @@ export default class GameState extends AbstractState {
             let x = this.rnd.integerInRange(1, 49);
             let y = this.rnd.integerInRange(1, 24);
 
-            this._createItem(x, y);
+            this._addItem(x, y);
 
             board.updateAvailableScore(items.length * Settings.ITEM_POINT);
         });
