@@ -120,6 +120,15 @@ export default class Player {
         this.sprite.body.setSize(this.sprite.width - 6, this.sprite.height);
     }
 
+    addScore(score) {
+        this.score += score;
+    }
+
+    remove() {
+        this.sprite.destroy();
+        this.label.destroy();
+    }
+
     get x() {
         if (this.sprite) {
             return this.sprite.x;
@@ -144,10 +153,6 @@ export default class Player {
     set y(value) {
         this.sprite.y = value;
         this.label.y = value - this.sprite.height - Settings.MARGIN_BETWEEN_PLAYER_AND_LABEL;
-    }
-
-    addScore(score) {
-        this.score += score;
     }
 
     toJSON() {

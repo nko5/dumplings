@@ -57,20 +57,24 @@ io.on('connection', function (socket) {
         io.emit('player:move', player);
     });
 
-    io.on('error', function () {
+    socket.on('error', function () {
         console.log('[$] socket: error');
     });
 
-    io.on('disconnect', function () {
+    socket.on('disconnect', function () {
         console.log('[$] socket: disconnect');
         cleanClients();
+
+        if (socket.player) {
+            io.emit('player:remove', socket.player);
+        }
     });
 
-    io.on('end', function () {
+    socket.on('end', function () {
         console.log('[$] socket: end');
     });
 
-    io.on('close', function () {
+    socket.on('close', function () {
         console.log('[$] socket: close');
     });
 });

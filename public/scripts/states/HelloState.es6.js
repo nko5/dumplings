@@ -69,6 +69,10 @@ export default class HelloState extends AbstractState {
                 });
             });
 
+            this.game.socket.on('player:remove', (playerJSON) => {
+                this.game.opponents[playerJSON.id].remove();
+            });
+
             this.game.socket.on('player:move', (playerJSON) => {
                 if (playerJSON.id === this.game.player.id) {
                     // The same player. Ignore it.
