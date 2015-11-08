@@ -17,6 +17,7 @@ export default class Message {
         let close = () => {
             Message.clear(this.game);
             callback();
+            document.removeEventListener('keydown', keyDownHandler);
         };
 
         function keyDownHandler(evt) {
@@ -26,7 +27,6 @@ export default class Message {
                 case ESCAPE_KEY:
                 case ENTER_KEY:
                     close();
-                    document.removeEventListener('keydown', keyDownHandler);
                     break;
 
                 // no default
