@@ -1,4 +1,3 @@
-let ESCAPE_KEY = 32;
 let ENTER_KEY = 13;
 
 export default class Message {
@@ -23,13 +22,8 @@ export default class Message {
         function keyDownHandler(evt) {
             let key = evt.keyCode;
 
-            switch (key) {
-                case ESCAPE_KEY:
-                case ENTER_KEY:
-                    close();
-                    break;
-
-                // no default
+            if (key === ENTER_KEY) {
+                close();
             }
         }
 
