@@ -27,10 +27,7 @@ export default class CollectingState extends AbstractState {
 
         this.game.socket.io.on('round:status', (isStarted, handshake) => {
             let message = null;
-            let callback = () => {
-                console.log('socket emit: round:start');
-                this.game.socket.io.emit('round:start', this.game.player.toJSON());
-            };
+            let callback = null;
 
             if (handshake.id !== this.game.socket.io.id) {
                 console.log('[?] ignore others client into gets info about status');
@@ -39,8 +36,15 @@ export default class CollectingState extends AbstractState {
 
             if (isStarted) {
                 message = Localization.ROUND_JOIN;
+                callback = () => {
+
+                };
             } else {
                 message = Localization.ROUND_START;
+                callback = () => {
+                    console.log('socket emit: round:start');
+                    this.game.socket.io.emit('round:start', this.game.player.toJSON());
+                };
             }
 
             new Message(this.game, {

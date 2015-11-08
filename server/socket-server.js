@@ -227,7 +227,7 @@ module.exports = function (io) {
 
             ItemsClock.start();
 
-            startRound('round:start', endRound);
+            startRound('round -> start', endRound);
         });
 
         socket.on('round:restart', function () {
@@ -242,7 +242,7 @@ module.exports = function (io) {
 
             ItemsClock.start();
 
-            startRound('round:restart', endRound);
+            startRound('round -> restart', endRound);
         });
     });
 
