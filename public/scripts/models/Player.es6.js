@@ -34,7 +34,7 @@ export default class Player {
         this.x = options.x || this.defaultPosition.x;
         this.y = options.y || this.defaultPosition.y;
 
-        // console.log('[+] new player', options);
+        console.log('[+] new player', options);
     }
 
     characters() {
