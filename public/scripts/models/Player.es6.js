@@ -125,7 +125,7 @@ export default class Player {
     }
 
     remove() {
-        console.log('[+] new player %s (%s)', this.name, this.id);
+        console.log('[+] remove player', { id: this.id, name: this.name, type: this.type });
 
         this.sprite.destroy();
         this.label.destroy();
