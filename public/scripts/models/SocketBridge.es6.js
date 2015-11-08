@@ -17,7 +17,7 @@ export default class SocketBridge {
             if (playerJSON.id === this.game.player.id) {
                 // The same player. Ignore it.
                 this.game.player.id = playerJSON.id;
-                // console.log('[?] ignore user (the same id)');
+                // console.log('[?] ignore creates user (the same id)');
             }
 
             players.forEach((playerJSON) => {
@@ -27,7 +27,7 @@ export default class SocketBridge {
                 }
 
                 if (playerJSON.id === this.game.player.id) {
-                    console.log('[?] ignore the same user (%s)', playerJSON.id);
+                    // console.log('[?] ignore creates the same user (%s)', playerJSON.id);
                     return;
                 }
 
