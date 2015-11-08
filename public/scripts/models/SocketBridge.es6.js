@@ -43,7 +43,13 @@ export default class SocketBridge {
             });
 
             items.forEach((itemJSON) => {
+                if (this.game.items.isExists(itemJSON.id)) {
+                    // Ignore another clients items.
+                    return;
+                }
+
                 this.game.items.add(Item.create(this.game, itemJSON));
+                this.game.board.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
             });
         });
 
@@ -95,12 +101,17 @@ export default class SocketBridge {
         });
 
         this.io.on('item:new', (itemJSON) => {
+            if (this.game.items.isExists(itemJSON.id)) {
+                // Ignore another clients items.
+                return;
+            }
+
             this.game.items.add(Item.create(this.game, itemJSON));
             this.game.board.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
         });
 
         this.io.on('item:remove', (itemID) => {
-            console.log('[>] remove item', itemID);
+            console.log('[>] remove item', { id: itemID });
 
             this.game.items.forEach((item) => {
                 if (item.id === itemID) {

@@ -11,6 +11,18 @@ export default class GameState extends AbstractState {
         this.game.player.render();
         this.game.items = this.add.group();
 
+        this.game.items.isExists = (itemID) => {
+            let isItemExists = false;
+
+            this.game.items.forEach((item) => {
+                if (item.id === itemID) {
+                    isItemExists = true;
+                }
+            });
+
+            return isItemExists;
+        };
+
         this.game.board.updatePlayerScore(this.game.player);
         this.game.board.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
     }

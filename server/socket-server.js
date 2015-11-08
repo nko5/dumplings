@@ -37,8 +37,17 @@ module.exports = function (io) {
 
     function sendRandomItem() {
         var index = randomInteger(0, availableItems.length - 1);
+        var item = availableItems[index];
+
+        if (items.indexOf(item) !== -1) {
+            // Ignore existed items.
+            return;
+        }
+
+        io.emit('item:new', item);
         items.push(availableItems[index]);
-        io.emit('item:new', availableItems[index]);
+
+        console.log('[%] send new item (%s)', items.length);
     }
 
     function hideRandomItem() {
@@ -48,15 +57,22 @@ module.exports = function (io) {
 
         var index = randomInteger(0, items.length - 1);
         io.emit('item:remove', items[index].id);
+
+        items.splice(index, 1);
+        console.log('[%] remove item: random (%s)', items.length);
     }
 
-    setInterval(function () {
-        sendRandomItem();
-    }, Settings.INTERVAL_ITEMS_APPEAR);
+    function findIndex(itemID) {
+        var index = -1;
 
-    setInterval(function () {
-        hideRandomItem();
-    }, Settings.INTERVAL_ITEMS_DISAPPEAR);
+        items.forEach((item, i) => {
+            if (item.id === itemID) {
+                index = i;
+            }
+        });
+
+        return index;
+    }
 
     io.on('connection', function (socket) {
         cleanClients();
@@ -78,6 +94,15 @@ module.exports = function (io) {
 
         socket.on('item:remove', function (itemID) {
             io.emit('item:remove', itemID);
+
+            var index = findIndex(itemID);
+
+            if (index === -1) {
+                return;
+            }
+
+            items.splice(index, 1);
+            console.log('[%] remove item: collect (%s)', items.length);
         });
 
         socket.on('disconnect', function () {
@@ -92,4 +117,12 @@ module.exports = function (io) {
             console.log('[$] socket: disconnect (%s)', name);
         });
     });
+
+    setInterval(function () {
+        sendRandomItem();
+    }, Settings.INTERVAL_ITEMS_APPEAR);
+
+    setInterval(function () {
+        hideRandomItem();
+    }, Settings.INTERVAL_ITEMS_DISAPPEAR);
 };

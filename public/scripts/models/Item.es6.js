@@ -8,6 +8,8 @@ export default class Item {
         sprite.id = options.id;
         sprite.name = 'item';
         sprite.body.allowGravity = false;
+        sprite.body.immovable = true;
+        sprite.body.moves = false;
     }
 
     static create(game, itemJSON) {
