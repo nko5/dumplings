@@ -1,4 +1,5 @@
 var uuid = require('node-uuid');
+var _ = require('underscore');
 var Settings = require('./config');
 var availableItems = require('./defaults-items-positions.json');
 
@@ -57,15 +58,9 @@ module.exports = function (io) {
             }
         });
 
-        list.sort((a, b) => {
-            if (a.score < b.score) {
-                return 1;
-            } else if (a.score > b.score) {
-                return -1;
-            } else {
-                return 0;
-            }
-        });
+        list = _.sortBy(list, (item) => item.score);
+
+        list.reverse();
 
         // For many players get only first
         if (list.length > 1) {
