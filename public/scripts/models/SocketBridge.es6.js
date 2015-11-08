@@ -1,4 +1,5 @@
 import Player from './Player';
+import Message from '../message';
 
 export default class SocketBridge {
     game = null;

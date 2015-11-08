@@ -2,7 +2,6 @@ import Board from '../models/Board';
 import Player from '../models/Player';
 import SocketBridge from '../models/SocketBridge';
 import AbstractState from './AbstractState';
-import Message from '../message';
 
 export default class HelloState extends AbstractState {
     init(options) {
