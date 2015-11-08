@@ -1,7 +1,8 @@
 import Settings from '../config';
 import Message from '../message';
 import Item from '../models/Item';
-import Board from '../models/Board';
+import HelpBoard from '../models/HelpBoard';
+import ResultsBoard from '../models/ResultsBoard';
 import Player from '../models/Player';
 import SocketBridge from '../models/SocketBridge';
 import AbstractState from './AbstractState';
@@ -11,7 +12,8 @@ export default class CollectingState extends AbstractState {
     create() {
         this.game.socket = new SocketBridge(this.game);
 
-        this.game.board = new Board(this.game);
+        this.game.helpBoard = new HelpBoard(this.game);
+        this.game.resultsBoard = new ResultsBoard(this.game);
         this.game.items = this.add.group();
         this.game.player = new Player(this.game, { name: this.game.username });
         this.game.opponents = {};
@@ -19,11 +21,12 @@ export default class CollectingState extends AbstractState {
 
         this._setupWorld();
 
-        this.game.board.render();
+        this.game.resultsBoard.render();
+        this.game.helpBoard.render();
         this.game.player.render();
 
-        this.game.board.updatePlayerScore(this.game.player);
-        this.game.board.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
+        this.game.helpBoard.updatePlayerScore(this.game.player);
+        this.game.helpBoard.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
 
         this.game.socket.io.on('round:status', (isStarted, handshake) => {
             let message = null;
@@ -81,7 +84,7 @@ export default class CollectingState extends AbstractState {
 
     _handleCollision() {
         let player = this.game.player;
-        let board = this.game.board;
+        let board = this.game.helpBoard;
 
         this.game.physics.arcade.collide(player.sprite, this.worldLayer);
         this.game.physics.arcade.collide(player.sprite, this.game.items, (sprite, item) => {

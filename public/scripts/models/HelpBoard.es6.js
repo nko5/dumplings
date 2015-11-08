@@ -1,7 +1,7 @@
 import Settings from '../config';
 import Utilities from '../utilities';
 
-export default class Board {
+export default class HelpBoard {
     game = null;
 
     playerScore = null;
@@ -30,13 +30,13 @@ export default class Board {
     }
 
     _displayAvailableScore() {
-        let label = this.game.add.text(this.game.width - 10, this.game.height - Settings.MARGIN_BETWEEN_BOARD_TEXT_TOP, '', this.style);
+        let label = this.game.add.text(790, this.game.height - Settings.MARGIN_BETWEEN_BOARD_TEXT_TOP, '', this.style);
         label.anchor.setTo(1, 0);
         return label;
     }
 
     _displayClock() {
-        let label = this.game.add.text(this.game.width / 2, this.game.height - Settings.MARGIN_BETWEEN_BOARD_TEXT_TOP, '--:--', this.style);
+        let label = this.game.add.text(400, this.game.height - Settings.MARGIN_BETWEEN_BOARD_TEXT_TOP, '--:--', this.style);
         label.anchor.setTo(0.5, 0);
         label.addColor('#F9A605', 0);
         return label;
@@ -50,11 +50,11 @@ export default class Board {
             localStorage.setItem(Settings.STORAGE_RECORD_SCORE, player.score);
         }
 
-        this.playerScore.text = `Personal best: ${record}`;
+        this.playerScore.setText(`Personal best: ${record}`);
     }
 
     updateAvailableScore(max) {
-        this.availableScore.text = `Available points: ${max}`;
+        this.availableScore.setText(`Available points: ${max}`);
     }
 
     updateClockLabel(remaining) {

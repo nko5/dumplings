@@ -43,7 +43,7 @@ export default class SocketBridge {
                 }
 
                 this.game.items.add(Item.create(this.game, itemJSON));
-                this.game.board.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
+                this.game.helpBoard.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
             });
         });
 
@@ -100,13 +100,18 @@ export default class SocketBridge {
         this.io.on('disconnect', () => {
             console.log('[$] socket: disconnect');
 
+            let callback = () => {
+                window.location.reload();
+            };
+
             new Message(this.game, {
                 message: Localization.ERROR,
                 type: 'error',
-                callback: () => {
-                    window.location.reload();
-                }
+                callback: callback
             });
+
+            // For sure, reload user browser
+            setTimeout(callback, 1000);
         });
 
         this.io.on('item:new', (itemJSON) => {
@@ -116,7 +121,7 @@ export default class SocketBridge {
             }
 
             this.game.items.add(Item.create(this.game, itemJSON));
-            this.game.board.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
+            this.game.helpBoard.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
         });
 
         this.io.on('item:remove', (itemID) => {
@@ -128,21 +133,21 @@ export default class SocketBridge {
                 }
             });
 
-            this.game.board.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
+            this.game.helpBoard.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
         });
 
         this.io.on('round:tick', (remaining) => {
             // console.log('socket on: round:tick');
-            this.game.board.updateClockLabel(remaining);
+            this.game.helpBoard.updateClockLabel(remaining);
         });
 
         this.io.on('round:start', (playerJSON) => {
-            console.log('socket on: round:start');
+            // console.log('socket on: round:start');
             Message.clear(this.game);
         });
 
         this.io.on('round:restart', (playerJSON) => {
-            console.log('socket on: round:restart');
+            // console.log('socket on: round:restart');
             Message.clear(this.game);
 
             this.game.player.score = 0;
@@ -152,11 +157,11 @@ export default class SocketBridge {
             });
 
             this.game.items.removeAll(true);
-            this.game.board.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
+            this.game.helpBoard.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
         });
 
         this.io.on('round:end', (results) => {
-            console.log('socket on: round:end');
+            // console.log('socket on: round:end');
 
             let player = _.findWhere(results, { id: this.game.player.id });
             let message = null;

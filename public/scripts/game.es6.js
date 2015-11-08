@@ -3,7 +3,7 @@ import CollectingState from './states/CollectingState';
 
 export default class Game {
     constructor(options) {
-        let phaser = new Phaser.Game(800, 450, Phaser.AUTO, 'area');
+        let phaser = new Phaser.Game(950, 450, Phaser.AUTO, 'area');
 
         phaser.username = options.username;
 

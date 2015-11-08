@@ -53,7 +53,7 @@ export default class Player {
                 stay: [17, 20, 22, 26, 29].map((i) => i - 1),
                 walk: [16, 19, 23, 25, 28, 30].map((i) => i - 1),
                 position: {
-                    x: this.game.width - 64,
+                    x: 736,
                     y: 96
                 }
             },
@@ -71,7 +71,7 @@ export default class Player {
                 stay: [53, 55, 57, 59].map((i) => i - 1),
                 walk: [52, 54, 56, 58, 60, 61].map((i) => i - 1),
                 position: {
-                    x: this.game.width - 80,
+                    x: 720,
                     y: this.game.height - 96
                 }
             }
