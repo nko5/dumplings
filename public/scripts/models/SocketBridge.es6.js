@@ -58,6 +58,8 @@ export default class SocketBridge {
 
             opponent.destroy();
             delete this.game.opponents[opponentJSON.id];
+
+            this.game.resultsBoard.updatePlayerList();
         });
 
         this.io.on('player:move', (opponentJSON) => {
@@ -160,6 +162,8 @@ export default class SocketBridge {
 
             this.game.items.removeAll(true);
             this.game.helpBoard.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
+
+            this.game.resultsBoard.updatePlayerList();
         });
 
         this.io.on('round:end', (results) => {
