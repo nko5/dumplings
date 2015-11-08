@@ -40,7 +40,7 @@ module.exports = function (io) {
 
         return players.map(function (client) {
             if (!client.player) {
-                console.log('ERR: Player is undefined', client.player);
+                console.log('ERROR: Player is undefined', client.player);
                 process.exit(1);
             }
             return client.player;
@@ -116,17 +116,27 @@ module.exports = function (io) {
         // console.log('[%] remove item: random (%s)', items.length);
     }
 
-    function findIndex(itemID) {
-        var index = -1;
+    var ItemsClock = (function () {
+        var addItemsClock = null;
+        var removeItemsClock = null;
 
-        items.forEach((item, i) => {
-            if (item.id === itemID) {
-                index = i;
+        return {
+            start: function () {
+                addItemsClock = setInterval(function () {
+                    sendRandomItem();
+                }, Settings.INTERVAL_ITEMS_APPEAR);
+
+                removeItemsClock = setInterval(function () {
+                    hideRandomItem();
+                }, Settings.INTERVAL_ITEMS_DISAPPEAR);
+            },
+
+            stop: function () {
+                clearInterval(addItemsClock);
+                clearInterval(removeItemsClock);
             }
-        });
-
-        return index;
-    }
+        };
+    }());
 
     function startRound(label, callback) {
         console.log('start round (from "%s")', label);
@@ -174,7 +184,7 @@ module.exports = function (io) {
         socket.on('item:remove', function (itemID) {
             io.emit('item:remove', itemID);
 
-            var index = findIndex(itemID);
+            var index = _.findIndex(items, { id: itemID });
 
             if (index === -1) {
                 return;
@@ -201,7 +211,11 @@ module.exports = function (io) {
             // console.log('[$] socket emit: round:start');
             io.emit('round:start', player);
 
+            ItemsClock.start();
+
             startRound('round:start', () => {
+                ItemsClock.stop();
+
                 console.log('[$] socket emit: round:end');
                 io.emit('round:end', calculateResults());
             });
@@ -215,20 +229,18 @@ module.exports = function (io) {
             clearPlayersScore();
 
             // console.log('[$] socket emit: round:restart');
-            io.emit('round:restart');
+            io.emit('round:restart', socket.player);
+
+            ItemsClock.start();
 
             startRound('round:restart', () => {
+                ItemsClock.stop();
+
                 console.log('[$] socket emit: round:end');
                 io.emit('round:end', calculateResults());
             });
         });
     });
 
-    setInterval(function () {
-        sendRandomItem();
-    }, Settings.INTERVAL_ITEMS_APPEAR);
-
-    setInterval(function () {
-        hideRandomItem();
-    }, Settings.INTERVAL_ITEMS_DISAPPEAR);
+    ItemsClock.start();
 };

@@ -164,7 +164,7 @@ export default class SocketBridge {
                 type: 'info',
                 callback: () => {
                     console.log('socket emit: round:restart');
-                    this.io.emit('round:restart');
+                    this.io.emit('round:restart', this.game.player);
                 }
             });
         });
