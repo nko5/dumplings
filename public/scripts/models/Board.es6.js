@@ -20,7 +20,6 @@ export default class Board {
     }
 
     render() {
-        // this.add.image(0, 400, 'footer_lodyas');
         this.playerScore = this._displayPlayerScore();
         this.availableScore = this._displayAvailableScore();
         this.clockLabel = this._displayClock();
