@@ -116,6 +116,14 @@ module.exports = function (io) {
 
             console.log('[$] socket: disconnect (%s)', name);
         });
+
+        socket.on('round:restart', function () {
+            items.forEach((item) => {
+                io.emit('item:remove', item.id);
+            });
+
+            items = [];
+        });
     });
 
     setInterval(function () {

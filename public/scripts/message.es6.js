@@ -1,11 +1,13 @@
 export default class Message {
+    game = this;
     $messages = null;
 
     constructor(game, options) {
+        this.game = game;
         this.$messages = document.querySelector('#messages');
 
         // Disable keyboard
-        game.input.enabled = false;
+        this.game.input.enabled = false;
 
         this._setupDOM(options);
     }
@@ -16,7 +18,15 @@ export default class Message {
 
         let $message = document.createElement('p');
         $message.textContent = message;
-        $message.addEventListener('click', callback);
+        $message.addEventListener('click', () => {
+            // Enable keyboard
+            this.game.input.enabled = true;
+
+            // Hidden message
+            this.$messages.style.display = 'none';
+
+            callback();
+        });
         $message.classList.add(`message-${type}`);
 
         this.$messages.appendChild($message);

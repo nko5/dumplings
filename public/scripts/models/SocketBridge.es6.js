@@ -43,7 +43,7 @@ export default class SocketBridge {
             });
 
             items.forEach((itemJSON) => {
-                if (this.game.items.isExists(itemJSON.id)) {
+                if (_.findWhere(this.game.items, { id: itemJSON.id })) {
                     // Ignore another clients items.
                     return;
                 }
@@ -102,7 +102,7 @@ export default class SocketBridge {
         });
 
         this.io.on('item:new', (itemJSON) => {
-            if (this.game.items.isExists(itemJSON.id)) {
+            if (_.findWhere(this.game.items, { id: itemJSON.id })) {
                 // Ignore another clients items.
                 return;
             }

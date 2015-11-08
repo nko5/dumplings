@@ -12,27 +12,20 @@ export default class GameState extends AbstractState {
         this.game.player.render();
         this.game.items = this.add.group();
 
-        this.game.items.isExists = (itemID) => {
-            let isItemExists = false;
-
-            this.game.items.forEach((item) => {
-                if (item.id === itemID) {
-                    isItemExists = true;
-                }
-            });
-
-            return isItemExists;
-        };
+        this._startRound();
 
         this.game.board.updatePlayerScore(this.game.player);
         this.game.board.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
+    }
 
+    _startRound() {
         this.game.board.startClock(Settings.ROUND_TIME, () => {
             new Message(this.game, {
                 message: 'Game over',
                 type: 'info',
                 callback: () => {
-                    window.location.reload();
+                    this.game.socket.io.emit('round:restart');
+                    this._startRound();
                 }
             });
         });

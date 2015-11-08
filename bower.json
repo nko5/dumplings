@@ -3,6 +3,7 @@
     "dependencies": {
         "phaser": "~2.4.4",
         "node-uuid": "~1.4.3",
-        "complete-string": "~2.0.2"
+        "complete-string": "~2.0.2",
+        "underscore": "~1.8.3"
     }
 }
