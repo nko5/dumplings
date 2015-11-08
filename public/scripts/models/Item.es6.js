@@ -12,8 +12,7 @@ export default class Item {
 
     static create(game, itemJSON) {
         let item = new Item(game, itemJSON);
-        game.items.add(item.sprite);
-
         console.log('[+] new item', itemJSON);
+        return item.sprite;
     }
 }

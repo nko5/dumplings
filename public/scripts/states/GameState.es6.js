@@ -11,8 +11,6 @@ export default class GameState extends AbstractState {
         this.game.player.render();
         this.game.items = this.add.group();
 
-        this._setupItems();
-
         this.game.board.updatePlayerScore(this.game.player);
         this.game.board.updateAvailableScore(this.game.items.length * Settings.ITEM_POINT);
     }
@@ -37,17 +35,6 @@ export default class GameState extends AbstractState {
         this.worldLayer.resizeWorld();
     }
 
-    _setupItems() {
-        this._addItem(3, 3);
-
-        // this._setupRandomAppear();
-        // this._setupRandomDisappear();
-    }
-
-    _addItem(x, y) {
-        Item.create(this.game, { x, y });
-    }
-
     _setupRandomAppear() {
         let board = this.game.board;
         let items = this.game.items;
@@ -57,7 +44,7 @@ export default class GameState extends AbstractState {
             let x = this.rnd.integerInRange(1, 49);
             let y = this.rnd.integerInRange(1, 24);
 
-            this._addItem(x, y);
+            this.game.items.add(Item.create(this.game, { x, y }));
 
             board.updateAvailableScore(items.length * Settings.ITEM_POINT);
         });

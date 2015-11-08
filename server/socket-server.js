@@ -1,12 +1,19 @@
 var uuid = require('node-uuid');
-var items = require('./defaults-items-positions.json');
+var availableItems = require('./defaults-items-positions.json');
 
-items.forEach((o) => {
+availableItems.forEach((o) => {
     o.id = uuid.v4();
 });
 
+const SEND_NEW_ITEM_DELAY = 10 * 1000;
+
+function randomInteger(low, high) {
+    return Math.floor(Math.random() * (high - low + 1) + low);
+}
+
 module.exports = function (io) {
     var clients = [];
+    var items = [];
 
     function setPlayerClient(index, player) {
         clients[index].player = player;
@@ -29,6 +36,15 @@ module.exports = function (io) {
         });
     }
 
+    function sendRandomItem() {
+        var index = randomInteger(0, availableItems.length - 1);
+        io.emit('item:new', availableItems[index]);
+    }
+
+    setInterval(function () {
+        sendRandomItem();
+    }, SEND_NEW_ITEM_DELAY);
+
     io.on('connection', function (socket) {
         cleanClients();
 
@@ -38,9 +54,8 @@ module.exports = function (io) {
 
         socket.on('player:new', function (player) {
             setPlayerClient(length - 1, player);
-
-            console.log('[$] socket: player:new: "%s"', player.name);
-            io.emit('player:new', player, dumpConnectedPlayers());
+            io.emit('player:new', player, dumpConnectedPlayers(), items);
+            // console.log('[$] socket: player:new: "%s"', player.name);
         });
 
         socket.on('player:move', function (player) {
@@ -63,7 +78,5 @@ module.exports = function (io) {
 
             console.log('[$] socket: disconnect (%s)', name);
         });
-
-        io.emit('item:new', items);
     });
 };

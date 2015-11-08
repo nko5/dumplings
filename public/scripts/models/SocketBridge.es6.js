@@ -14,7 +14,9 @@ export default class SocketBridge {
     }
 
     setup() {
-        this.io.on('player:new', (playerJSON, opponents) => {
+        this.io.emit('player:new', this.game.player.toJSON());
+
+        this.io.on('player:new', (playerJSON, opponents, items) => {
             if (playerJSON.id === this.game.player.id) {
                 // The same player. Ignore it.
                 this.game.player.id = playerJSON.id;
@@ -37,6 +39,10 @@ export default class SocketBridge {
                 // console.log('opponentJSON (%s, %s)', opponentJSON.x, opponentJSON.y);
 
                 this.game.opponents[opponentJSON.id] = Player.create(this.game, opponentJSON);
+            });
+
+            items.forEach((itemJSON) => {
+                this.game.items.add(Item.create(this.game, itemJSON));
             });
         });
 
@@ -72,8 +78,6 @@ export default class SocketBridge {
             this.game.opponents[playerJSON.id].y = playerJSON.y;
         });
 
-        this.io.emit('player:new', this.game.player.toJSON());
-
         this.io.on('connect', () => {
             console.log('[$] socket: connect');
         });
@@ -89,13 +93,8 @@ export default class SocketBridge {
             });
         });
 
-        this.io.on('item:new', (list) => {
-            console.log('[>] new parts of items (%s)', list.length);
-
-            list.forEach((itemJSON) => {
-                // console.log('try to add new item', itemJSON);
-                Item.create(this.game, itemJSON);
-            });
+        this.io.on('item:new', (itemJSON) => {
+            this.game.items.add(Item.create(this.game, itemJSON));
         });
 
         this.io.on('item:remove', (itemID) => {
