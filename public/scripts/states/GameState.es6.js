@@ -39,7 +39,7 @@ export default class GameState extends AbstractState {
 
     _setupItems() {
         this._addItem(3, 3);
-        
+
         // this._setupRandomAppear();
         // this._setupRandomDisappear();
     }
@@ -98,15 +98,11 @@ export default class GameState extends AbstractState {
 
         this.game.physics.arcade.collide(player.sprite, this.worldLayer);
         this.game.physics.arcade.collide(player.sprite, this.game.items, (sprite, item) => {
-            item.destroy();
+            this.game.socket.io.emit('item:remove', item.id);
+
+            // item.destroy();
             player.addScore(Settings.ITEM_POINT);
             board.updatePlayerScore(player);
-        });
-
-        this.game.physics.arcade.overlap(this.game.items, this.worldLayer, (item, map) => {
-            if (map.index !== -1) {
-                item.destroy();
-            }
         });
     }
 

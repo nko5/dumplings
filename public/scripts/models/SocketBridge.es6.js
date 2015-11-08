@@ -89,13 +89,23 @@ export default class SocketBridge {
             });
         });
 
-        this.io.on('items:new', (list) => {
-            console.log('[>] new parts of items');
+        this.io.on('item:new', (list) => {
+            console.log('[>] new parts of items (%s)', list.length);
 
             list.forEach((itemJSON) => {
                 // console.log('try to add new item', itemJSON);
                 Item.create(this.game, itemJSON);
             });
+        });
+
+        this.io.on('item:remove', (itemID) => {
+            console.log('[>] remove item', itemID);
+
+            this.game.items.forEach((item) => {
+                if (item.id === itemID) {
+                    item.destroy();
+                }
+            })
         });
     }
 }

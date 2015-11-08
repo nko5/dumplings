@@ -1,4 +1,9 @@
+var uuid = require('node-uuid');
 var items = require('./defaults-items-positions.json');
+
+items.forEach((o) => {
+    o.id = uuid.v4();
+});
 
 module.exports = function (io) {
     var clients = [];
@@ -36,13 +41,15 @@ module.exports = function (io) {
 
             console.log('[$] socket: player:new: "%s"', player.name);
             io.emit('player:new', player, dumpConnectedPlayers());
-
-            io.emit('items:new', items);
         });
 
         socket.on('player:move', function (player) {
             setPlayerClient(length - 1, player);
             io.emit('player:move', player);
+        });
+
+        socket.on('item:remove', function (itemID) {
+            io.emit('item:remove', itemID);
         });
 
         socket.on('disconnect', function () {
@@ -56,5 +63,7 @@ module.exports = function (io) {
 
             console.log('[$] socket: disconnect (%s)', name);
         });
+
+        io.emit('item:new', items);
     });
 };

@@ -5,6 +5,7 @@ export default class Item {
         let sprite = this.sprite = game.add.tileSprite(options.x * 16, options.y * 16, 16, 16, 'gameboy-tileset', 2);
         game.physics.arcade.enable(sprite);
 
+        sprite.id = options.id;
         sprite.name = 'item';
         sprite.body.allowGravity = false;
     }

@@ -110,7 +110,8 @@ export default class Player {
     }
 
     _buildPlayerLabelText() {
-        return `${this.name} (${this.x}, ${this.y})`;
+        // return `${this.name} (${this.x}, ${this.y})`;
+        return `${this.name})`;
     }
 
     _setupPlayerLabel(character) {
