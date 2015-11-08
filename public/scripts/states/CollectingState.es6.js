@@ -33,7 +33,7 @@ export default class CollectingState extends AbstractState {
             let callback = null;
 
             if (handshake.id !== this.game.socket.io.id) {
-                console.log('[?] ignore others client into gets info about status');
+                // console.log('[?] ignore others client into gets info about status');
                 return;
             }
 
@@ -45,7 +45,7 @@ export default class CollectingState extends AbstractState {
             } else {
                 message = Localization.ROUND_START;
                 callback = () => {
-                    console.log('socket emit: round:start');
+                    // console.log('socket emit: round:start');
                     this.game.socket.io.emit('round:start', this.game.player.toJSON());
                 };
             }
@@ -84,14 +84,16 @@ export default class CollectingState extends AbstractState {
 
     _handleCollision() {
         let player = this.game.player;
-        let board = this.game.helpBoard;
+        let helpBoard = this.game.helpBoard;
+        let resultsBoard = this.game.resultsBoard;
 
         this.game.physics.arcade.collide(player.sprite, this.worldLayer);
         this.game.physics.arcade.collide(player.sprite, this.game.items, (sprite, item) => {
             this.game.socket.io.emit('item:remove', item.id);
 
             player.score += Settings.ITEM_POINT;
-            board.updatePlayerScore(player);
+            helpBoard.updatePlayerScore(player);
+            resultsBoard.updatePlayerList();
 
             this.game.socket.io.emit('player:score', player.toJSON());
         });

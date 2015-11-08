@@ -95,6 +95,8 @@ export default class SocketBridge {
             }
 
             this.game.opponents[opponentJSON.id].score = opponentJSON.score;
+
+            this.game.resultsBoard.updatePlayerList();
         });
 
         this.io.on('disconnect', () => {

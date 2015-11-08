@@ -9,16 +9,10 @@ export default class ResultsBoard {
     }
 
     render() {
-        let players = [
-            this.game.player.toJSON()
-        ];
-
-        players.concat(_.toArray(this.game.opponents));
-
         this.titleLabel = this._displayTitleLabel();
         this.listLabel = this._displayPayerList();
 
-        this.updatePlayerList(players);
+        this.updatePlayerList();
     }
 
     _displayTitleLabel() {
@@ -29,7 +23,20 @@ export default class ResultsBoard {
         return this.game.add.text(810, 50, '', { font: "12px Tahoma", fill: '#ffff00' });
     }
 
-    updatePlayerList(players) {
+    _buildPlayerList() {
+        let players = [
+            this.game.player.toJSON()
+        ];
+
+        let opponents = _.toArray(this.game.opponents).map((opponent) => {
+            return opponent.toJSON();
+        });
+
+        return players.concat(opponents);
+    }
+
+    updatePlayerList() {
+        let players = this._buildPlayerList();
         this.listLabel.setText(ResultsBoard.parse(players));
     }
 
