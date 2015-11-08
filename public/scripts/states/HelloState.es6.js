@@ -72,7 +72,7 @@ export default class HelloState extends AbstractState {
             this.game.socket.on('player:move', (playerJSON) => {
                 if (playerJSON.id === this.game.player.id) {
                     // The same player. Ignore it.
-                    console.log('[?] ignore my moves (%s)', playerJSON.id);
+                    // console.log('[?] ignore my moves (%s)', playerJSON.id);
                     return;
                 }
 
@@ -84,8 +84,8 @@ export default class HelloState extends AbstractState {
                     return;
                 }
 
-                this.game.opponents[playerJSON.id].sprite.x = playerJSON.x;
-                this.game.opponents[playerJSON.id].sprite.y = playerJSON.y;
+                this.game.opponents[playerJSON.id].x = playerJSON.x;
+                this.game.opponents[playerJSON.id].y = playerJSON.y;
             });
 
             this.game.socket.emit('player:new', this.game.player.toJSON());

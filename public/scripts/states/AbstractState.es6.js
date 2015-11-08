@@ -1,12 +1,11 @@
 export default class AbstractState extends Phaser.State {
     displayLabel({ message, x, y, font }) {
-        let style = {
+        let label = this.add.text(x || this.game.width / 2, y || this.game.height / 2, message, {
             font: font || "lighter 54px Verdana",
             fill: "#fff",
             boundsAlignH: "center",
             boundsAlignV: "middle"
-        };
-        let label = this.add.text(x || this.game.width / 2, y || this.game.height / 2, message, style);
+        });
         label.anchor.setTo(0.5, 0.5);
         return label;
     }

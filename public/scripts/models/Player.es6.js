@@ -1,3 +1,5 @@
+import Settings from '../config';
+
 export default class Player {
     game = null;
 
@@ -9,6 +11,7 @@ export default class Player {
         y: 0
     };
     sprite = null;
+    label = null;
     score = 0;
 
     constructor(game, options) {
@@ -61,7 +64,7 @@ export default class Player {
                 }
             },
             {
-                type: 'blue',
+                type: 'lightblue',
                 stay: [53, 55, 57, 59].map((i) => i - 1),
                 walk: [52, 54, 56, 58, 60, 61].map((i) => i - 1),
                 position: {
@@ -95,6 +98,14 @@ export default class Player {
 
         sprite.animations.play('stay');
 
+        let label = this.label = this.game.add.text(this.x, this.y - this.sprite.height - Settings.MARGIN_BETWEEN_PLAYER_AND_LABEL, this.name, {
+            font: "lighter 11px Verdana",
+            fill: character.type,
+            boundsAlignH: "center",
+            boundsAlignV: "middle"
+        });
+        label.anchor.setTo(0.5, 0.5);
+
         this._enablePhysics();
     }
 
@@ -112,17 +123,27 @@ export default class Player {
     get x() {
         if (this.sprite) {
             return this.sprite.x;
+        } else {
+            return this.defaultPosition.x;
         }
+    }
 
-        return this.defaultPosition.x;
+    set x(value) {
+        this.sprite.x = value;
+        this.label.x = value;
     }
 
     get y() {
         if (this.sprite) {
             return this.sprite.y;
+        } else {
+            return this.defaultPosition.y;
         }
+    }
 
-        return this.defaultPosition.y;
+    set y(value) {
+        this.sprite.y = value;
+        this.label.y = value - this.sprite.height - Settings.MARGIN_BETWEEN_PLAYER_AND_LABEL;
     }
 
     addScore(score) {
