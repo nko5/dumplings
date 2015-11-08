@@ -52,7 +52,7 @@ export default class SocketBridge {
 
             if (!opponent) {
                 // Not yet created (rendered).
-                console.log('[?] try remove but, not yet created (%s)', opponentJSON.id);
+                // console.log('[?] try remove but, not yet created (%s)', opponentJSON.id);
                 return;
             }
 
@@ -73,7 +73,7 @@ export default class SocketBridge {
 
             if (!opponent) {
                 // Not yet created (rendered).
-                console.log('[?] try move but, not yet created (%s)', opponentJSON.id);
+                // console.log('[?] try move but, not yet created (%s)', opponentJSON.id);
                 return;
             }
 
@@ -92,7 +92,7 @@ export default class SocketBridge {
 
             if (!opponent) {
                 // Not yet created (rendered).
-                console.log('[?] try update score but, not yet created (%s)', opponentJSON.id);
+                // console.log('[?] try update score but, not yet created (%s)', opponentJSON.id);
                 return;
             }
 
@@ -102,7 +102,7 @@ export default class SocketBridge {
         });
 
         this.io.on('disconnect', () => {
-            console.log('[$] socket: disconnect');
+            // console.log('[$] socket: disconnect');
 
             let callback = () => {
                 window.location.reload();
@@ -184,7 +184,7 @@ export default class SocketBridge {
                 message: message,
                 type: type,
                 callback: () => {
-                    console.log('socket emit: round:restart');
+                    // console.log('socket emit: round:restart');
                     this.io.emit('round:restart', this.game.player.toJSON());
                 }
             });

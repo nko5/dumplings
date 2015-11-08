@@ -147,7 +147,7 @@ export default class Player {
     }
 
     destroy() {
-        // console.log('[+] destroy player', { id: this.id, name: this.name, type: this.type });
+        console.log('[+] destroy player', { id: this.id, name: this.name, type: this.type });
 
         this.sprite.destroy();
         this.label.destroy();
