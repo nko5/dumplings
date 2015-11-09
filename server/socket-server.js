@@ -140,10 +140,8 @@ module.exports = function (io) {
         };
     }());
 
-    function startRound(label, callback) {
+    function startRound(callback) {
         isStarted = true;
-
-        console.log('start round (from "%s")', label);
 
         var tick = 0;
 
@@ -227,7 +225,7 @@ module.exports = function (io) {
 
             ItemsManagerClock.start();
 
-            startRound('round -> start', endRound);
+            startRound(endRound);
         });
 
         socket.on('round:restart', function () {
@@ -242,7 +240,7 @@ module.exports = function (io) {
 
             ItemsManagerClock.start();
 
-            startRound('round -> restart', endRound);
+            startRound(endRound);
         });
     });
 
