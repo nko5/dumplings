@@ -43,6 +43,9 @@ export default class Message {
 
         // Disable keyboard
         game.input.enabled = false;
+
+        // Reset keyboard, to not trigger any keydown events!
+        game.input.keyboard.reset();
     }
 
     static clear(game) {
