@@ -89,6 +89,9 @@ export default class CollectingState extends AbstractState {
 
         this.game.physics.arcade.collide(player.sprite, this.worldLayer);
         this.game.physics.arcade.collide(player.sprite, this.game.items, (sprite, item) => {
+            // Must destroy, because event should be late to destroy item, so points can increase couple times
+            item.destroy();
+
             this.game.socket.io.emit('item:remove', item.id);
 
             player.score += Settings.ITEM_POINT;
