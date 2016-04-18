@@ -28,7 +28,7 @@
         "webpack": "^1.12.3"
     },
     "scripts": {
-        "clear": "rm -rf node_modules/ public/components/ dist/",
+        "clear": "rm -rf node_modules/ public/bower_components/ dist/",
         "start": "node app.js",
         "preinstall": "bower install",
         "install": "webpack",
