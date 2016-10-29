@@ -1,4 +1,5 @@
 {
+    "private": true,
     "name": "mms-game",
     "dependencies": {
         "phaser": "~2.4.4",
