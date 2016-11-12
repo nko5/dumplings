@@ -1,5 +1,5 @@
-import BootState from './states/BootState';
-import CollectingState from './states/CollectingState';
+import BootState from './states/boot-state';
+import CollectingState from './states/collecting-state';
 
 export default class Game {
     constructor(options) {

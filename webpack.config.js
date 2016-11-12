@@ -1,28 +1,29 @@
+'use strict';
+
 module.exports = {
-    resolve: {
-        extensions: ['.es6.js', '.js', '']
+    entry: {
+        phaser: './node_modules/phaser/build/phaser',
+        game: './public/scripts/main'
     },
 
-    entry: './public/scripts/main',
-
     output: {
-        filename: 'bundle.js',
-        path: 'public/dist'
+        filename: '[name].bundle.js',
+        path: './public/dist'
     },
 
     module: {
         loaders: [
             {
-                test: /\.es6\.js/,
-                exclude: /node_modules/,
-                loader: 'babel-loader',
-                query: {
-                    cacheDirectory: true,
-                    presets: ['es2015', 'stage-0']
-                }
+                test: /phaser\.js$/,
+                loader: 'script-loader'
             },
             {
-                test: /\.json/,
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader'
+            },
+            {
+                test: /\.json$/,
                 exclude: /node_modules/,
                 loader: 'json-loader'
             }

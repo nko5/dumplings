@@ -1,3 +1,5 @@
+let CompleteString = require('complete-string');
+
 export default class Utilities {
     static formatSeconds(number) {
         var timeToDisplay = [];

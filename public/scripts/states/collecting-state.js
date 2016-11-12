@@ -1,11 +1,11 @@
 import Settings from '../config';
 import Message from '../message';
-import Item from '../models/Item';
-import HelpBoard from '../models/HelpBoard';
-import ResultsBoard from '../models/ResultsBoard';
-import Player from '../models/Player';
-import SocketBridge from '../models/SocketBridge';
-import AbstractState from './AbstractState';
+import Item from '../models/item';
+import HelpBoard from '../models/help-board';
+import ResultsBoard from '../models/results-board';
+import Player from '../models/player';
+import SocketBridge from '../models/socket-bridge';
+import AbstractState from './abstract-state';
 import Localization from '../../locale/en.json';
 
 export default class CollectingState extends AbstractState {

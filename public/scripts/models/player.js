@@ -1,3 +1,5 @@
+let uuid = require('uuid');
+
 import Settings from '../config';
 
 export default class Player {

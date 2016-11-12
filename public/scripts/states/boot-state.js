@@ -1,4 +1,4 @@
-import AbstractState from './AbstractState';
+import AbstractState from './abstract-state';
 
 export default class BootState extends AbstractState {
     preload() {

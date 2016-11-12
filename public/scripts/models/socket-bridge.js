@@ -1,5 +1,7 @@
-import Item from './Item';
-import Player from './Player';
+let _ = require('underscore');
+
+import Item from './item';
+import Player from './player';
 import Message from '../message';
 import Settings from '../config';
 import Localization from '../../locale/en.json';

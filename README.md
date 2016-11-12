@@ -1,4 +1,4 @@
-# dumplings - nko2015
+# dumplings.2015.nodeknockout.com
 
 > Funny game with M&Ms character. They try to get all of the items at single round.
 
@@ -14,6 +14,7 @@ git clone git@github.com:nko5/dumplings.git && cd ./dumplings/
 
 # developing
 npm install
+npm run build
 npm start
 
 # setup your modulus account

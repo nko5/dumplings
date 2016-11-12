@@ -1,3 +1,5 @@
+let _ = require('underscore');
+
 export default class ResultsBoard {
     game = null;
 

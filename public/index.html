@@ -2,19 +2,19 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>M&Ms Game :: Node Knockout 2015</title>
-
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <title>M&Ms Game :: Node Knockout 2015</title>
+
     <link rel="stylesheet" type="text/css" href="styles/main.css">
-    <link rel="icon" type="image/png" href="assets/sprites/mms/slice02_02.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="assets/sprites/mms/slice02_02.png" sizes="16x16"/>
 </head>
 <body>
     <div id="area" class="fill-max"></div>
 
     <div id="form" class="fill-max">
-        <input id="name" type="text" placeholder="Put here your name" />
+        <input id="name" type="text" placeholder="Put here your name"/>
     </div>
 
     <div id="messages" class="fill-max"></div>
@@ -24,17 +24,8 @@
     </a>
     <iframe id="nko-badge" src="http://nodeknockout.com/iframe/dumplings" frameborder="0" scrolling="no" allowtransparency="true" width="115" height="25"></iframe>
 
-
     <script src="/socket.io/socket.io.js"></script>
-    <script src="bower_components/phaser/build/custom/phaser-arcade-physics.min.js"></script>
-    <script>
-        window.PhaserGlobal = {
-            hideBanner: true
-        };
-    </script>
-    <script src="bower_components/node-uuid/uuid.js"></script>
-    <script src="bower_components/complete-string/complete-string.js"></script>
-    <script src="bower_components/underscore/underscore-min.js"></script>
-    <script src="dist/bundle.js"></script>
+    <script src="dist/phaser.bundle.js"></script>
+    <script src="dist/game.bundle.js"></script>
 </body>
 </html>
