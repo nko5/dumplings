@@ -131,7 +131,7 @@ export default class CollectingState extends AbstractState {
         let player = this.game.player;
         let sprite = player.sprite;
 
-        if (AbstractState.isMoving(sprite)) {
+        if (AbstractState.isMoved(sprite)) {
             this.game.socket.io.emit('player:move', this.game.player.toJSON());
         }
 
